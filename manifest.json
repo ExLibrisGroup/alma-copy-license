@@ -9,6 +9,9 @@
       "value": "/assets/alma-copy-license-icon.png"
    },
    "contentSecurity": {
+      "sandbox": {
+         "downloads": true
+      },
       "connectSrc": [
          "https://*.execute-api.eu-central-1.amazonaws.com/ "
       ]

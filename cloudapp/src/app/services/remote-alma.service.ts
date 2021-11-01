@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Licenses, PageOptions } from "../models/alma";
+import { Attachment, Attachments, License, Licenses, PageOptions } from "../models/alma";
 import { RestProxyService } from "./rest-proxy.service";
 
 @Injectable({
@@ -18,5 +18,17 @@ export class RemoteAlmaService {
       offset: page.offset,
     } 
     return this.rest.call<Licenses>({ url: '/almaws/v1/acq/licenses', queryParams })
+  }
+
+  getLicense(code: string) {
+    return this.rest.call<License>(`/almaws/v1/acq/licenses/${code}`);
+  }
+
+  getAttachments(code: string) {
+    return this.rest.call<Attachments>(`/almaws/v1/acq/licenses/${code}/attachments`);
+  }
+
+  getAttachment(code: string, id: string) {
+    return this.rest.call<Attachment>(`/almaws/v1/acq/licenses/${code}/attachments/${id}?expand=content`)
   }
 }

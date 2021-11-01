@@ -1,0 +1,92 @@
+<div class="cloudapp-actions">
+  <button mat-flat-button color="secondary" [routerLink]="['/']">
+    <mat-icon>arrow_back_ios</mat-icon> {{ 'BACK' | translate}}
+  </button>
+  <button mat-flat-button type="button" color="primary" (click)="copy()" [disabled]="!license">{{ 'MAIN.COPY' | translate}}</button>
+</div>
+<div *ngIf="license">
+  <mat-card><h2>{{ license.code }} / {{ license.name }}</h2></mat-card>
+  <mat-tab-group mat-align-tabs="start" >
+    <mat-tab label="{{ 'VIEW.DETAILS' | translate }}">
+      <div class="grid">
+        <mat-form-field>
+          <mat-label translate>VIEW.FIELDS.CODE</mat-label>
+          <input matInput [value]="license.code" readonly=true>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label translate>VIEW.FIELDS.NAME</mat-label>
+          <input matInput [value]="license.name" readonly=true>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label translate>VIEW.FIELDS.STATUS</mat-label>
+          <input matInput [value]="license.status.desc" readonly=true>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label translate>VIEW.FIELDS.LICENSOR</mat-label>
+          <input matInput [value]="license.licensor.desc" readonly=true>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label translate>VIEW.FIELDS.SIGNED_BY</mat-label>
+          <input matInput [value]="license.signed_by" readonly=true>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label translate>VIEW.FIELDS.SIGNED_ON</mat-label>
+          <input matInput [value]="license.signed_date | date:'mediumDate'" readonly=true>
+        </mat-form-field>    
+        <mat-form-field>
+          <mat-label translate>VIEW.FIELDS.START_DATE</mat-label>
+          <input matInput [value]="license.start_date | date:'mediumDate'" readonly=true>
+        </mat-form-field>   
+        <mat-form-field>
+          <mat-label translate>VIEW.FIELDS.END_DATE</mat-label>
+          <input matInput [value]="" readonly=true>
+        </mat-form-field>   
+        <mat-form-field>
+          <mat-label translate>VIEW.FIELDS.LOCATION</mat-label>
+          <input matInput [value]="license.location.desc" readonly=true>
+        </mat-form-field>   
+        <mat-form-field>
+          <mat-label translate>VIEW.FIELDS.REVIEW_STATUS</mat-label>
+          <input matInput [value]="license.review_status.desc" readonly=true>
+        </mat-form-field>    
+        <mat-form-field>
+          <mat-label translate>VIEW.FIELDS.URI</mat-label>
+          <input matInput [value]="license.uri" readonly=true>
+        </mat-form-field>  
+        <mat-form-field>
+          <mat-label translate>VIEW.FIELDS.LICENSING_AGENT</mat-label>
+          <input matInput [value]="license.licensing_agent.desc" readonly=true>
+        </mat-form-field>   
+      </div>
+    </mat-tab>
+    <mat-tab label="{{ 'VIEW.LICENSE_TERMS' | translate }}">
+      <div class="grid">
+        <mat-form-field *ngFor="let term of terms">
+          <mat-label>{{ term.code.desc }}</mat-label>
+          <input matInput [value]="term.value.desc" readonly=true>
+        </mat-form-field> 
+      </div>
+    </mat-tab>
+    <mat-tab label="{{ 'VIEW.ATTACHMENTS' | translate }}">
+      <mat-list role="list" *ngIf="attachments.length > 0; else emptyList">
+        <mat-list-item role="listitem" *ngFor="let attachment of attachments">
+          {{ attachment.file_name }}
+          <i class="uxf-icon uxf-download eca-button" (click)="downloadAttachment(attachment.id)"></i>
+        </mat-list-item>
+      </mat-list>
+    </mat-tab>
+  </mat-tab-group>
+</div>
+<div class="loading-shade" *ngIf="saving">
+  <mat-progress-spinner mode="indeterminate" diameter="50"></mat-progress-spinner>
+</div>
+<ng-template #emptyList>
+  <div id="emptyList">
+    <span class="uxf-icon uxf-list" style="font-size: 3em;"></span>
+  </div>
+</ng-template>
+<!--
+<pre *ngIf="license">
+  {{license | json}}
+</pre>
+-->

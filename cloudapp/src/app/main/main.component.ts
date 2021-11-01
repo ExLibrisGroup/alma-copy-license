@@ -7,6 +7,7 @@ import { marker as _ } from '@biesbjerg/ngx-translate-extract-marker';
 import { finalize } from 'rxjs/operators';
 import { Licenses, PageOptions } from '../models/alma';
 import { PageEvent } from '@angular/material/paginator';
+import { Router } from '@angular/router';
 
 export const STORE_INST_CODE = 'INST_CODE';
 export const STORE_SEARCH_TYPE = 'SEARCH_TYPE';
@@ -42,11 +43,15 @@ export class MainComponent implements OnInit, OnDestroy {
     private rest: RestProxyService,
     private data: DataService,
     private alma: RemoteAlmaService,
+    private router: Router,
   ) { }
 
   ngOnInit() {
     this.data.getInstCodes()
-    .subscribe(instCodes => this.instCodes = instCodes);
+    .subscribe({
+      next: instCodes => this.instCodes = instCodes,
+      error: e => this.alert.error(e.message),
+    });
     this.store.get(STORE_INST_CODE).subscribe(val => this.instCode = val);
     this.store.get(STORE_SEARCH_TYPE).subscribe(val => this.searchType = val || 'name');
   }
@@ -82,5 +87,10 @@ export class MainComponent implements OnInit, OnDestroy {
       next: licenses => this.results = licenses,
       error: e => this.alert.error(e.message),
     });;
+  }
+
+  view() {
+    const params = {licenseCode: this.selectedLicense};
+    this.router.navigate(['view', params]);
   }
 }

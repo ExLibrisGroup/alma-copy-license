@@ -12,12 +12,14 @@ import { MainComponent } from './main/main.component';
 import { ConfigurationComponent } from './configuration/configuration.component';
 import { CustomMatPaginatorIntl } from './mat-paginator-intl';
 import { MatPaginatorIntl } from '@angular/material/paginator';
+import { ViewLicenseComponent } from './view-license/view-license.component';
 
 @NgModule({
-  declarations: [	
+  declarations: [		
     AppComponent,
     MainComponent,
     ConfigurationComponent,
+    ViewLicenseComponent,
    ],
   imports: [
     MaterialModule,

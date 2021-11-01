@@ -1,5 +1,5 @@
 import { Component, Injectable, OnInit } from '@angular/core';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { configurationFormGroup } from '../models/configuration';
 import { ConfigurationService } from '../services/configuration.service';
 import { marker as _ } from '@biesbjerg/ngx-translate-extract-marker';
@@ -20,7 +20,6 @@ export class ConfigurationComponent implements OnInit {
   
   constructor(
     private configurationService: ConfigurationService,
-    private dialog: DialogService,
   ) { }
 
   ngOnInit() {
@@ -37,27 +36,6 @@ export class ConfigurationComponent implements OnInit {
       () => this.form.markAsPristine()
     );
   }
-
-  addInstCode() {
-    this.dialog.prompt({
-      title: _('CONFIGURATION.INST_CODES.ADD'),
-    })
-    .subscribe((instCode: string) => {
-      if (!instCode) return;
-        this.instCodes.push(new FormControl(instCode));
-        this.instCodes.markAsDirty();
-    })
-  }
-
-  removeInstCode(index: number) {
-    this.instCodes.removeAt(index);
-    this.instCodes.markAsDirty();
-  }
-
-  get instCodes() {
-    return this.form.controls.instCodes as FormArray;
-  }
-
 }
 
 @Injectable({

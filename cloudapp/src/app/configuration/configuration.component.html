@@ -10,14 +10,6 @@
     <mat-label>{{'CONFIGURATION.REST_PROXY_URL' | translate}}</mat-label>
     <input matInput required formControlName="restProxyUrl">
   </mat-form-field>
-  <h2 translate>CONFIGURATION.INST_CODES.TITLE</h2>
-  <mat-list role="list">
-    <mat-list-item role="listitem" *ngFor="let code of form.controls.instCodes.value; index as i">
-      {{ code }}
-      <i class="uxf-icon uxf-close eca-button" (click)="removeInstCode(i)"></i>
-    </mat-list-item>
-  </mat-list>
-  <button mat-flat-button type="button" color="secondary" (click)="addInstCode()">{{ 'CONFIGURATION.INST_CODES.ADD' | translate}}</button>
 </form>
 
 <div class="loading-shade" *ngIf="saving">

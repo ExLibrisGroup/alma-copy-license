@@ -6,25 +6,6 @@ import { catchError, switchMap, tap } from 'rxjs/operators';
 import { merge, mapKeys } from 'lodash';
 import { ConfigurationService } from './configuration.service';
 
-/*
-enum AllowedHeader {
-  ACCEPT = "Accept",
-  CONTENT_TYPE = "Content-Type",
-  FOR_INST_CODE = "X-For-InstCode",
-}
-
-export interface Request {
-  url: string;
-  method?: HttpMethod;
-  headers?: {
-      [header in AllowedHeader]?: string;
-  };
-  queryParams?: {
-      [param: string]: any;
-  };
-  requestBody?: any;
-}
-*/
 @Injectable({
   providedIn: 'root'
 })

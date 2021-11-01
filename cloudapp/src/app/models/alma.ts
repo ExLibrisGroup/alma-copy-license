@@ -8,6 +8,12 @@ export interface License {
   code: string;
   name: string;
   licensor: Value;
+  term: Term[];
+}
+
+export interface Term {
+  code: Value;
+  value: Value;
 }
 
 export interface Value {
@@ -18,4 +24,17 @@ export interface Value {
 export interface PageOptions {
   limit: number;
   offset: number;
+}
+
+export interface Attachments {
+  total_record_count: number;
+  attachment: Attachment[];
+}
+
+export interface Attachment {
+  link: string;
+  id: string;
+  file_name: string;
+  type: string;
+  content: string;
 }

@@ -22,7 +22,7 @@
   </mat-button-toggle-group>
 </mat-form-field>
 <mat-menu #searchMenu="matMenu">
-  <button mat-menu-item *ngFor="let option of searchOptions" (click)="setSearchType(option); searchTermInput.focus()">{{ 'MAIN.SEARCH_TYPE.' + option | translate }}</button>
+  <button mat-menu-item *ngFor="let option of searchOptions" (click)="setSearchType(option); searchTermInput.focus()">{{ option | translate }}</button>
 </mat-menu>
 <div *ngIf="results">
   <mat-radio-group 

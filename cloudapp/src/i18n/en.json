@@ -3,10 +3,6 @@
 	"CONFIGURATION": {
 		"DISCARD": "Discard changes?",
 		"DISCARD_OK": "Yes, discard changes",
-		"INST_CODES": {
-			"ADD": "Add Institution Code",
-			"TITLE": "Institution Codes"
-		},
 		"REST_PROXY_URL": "Proxy URL",
 		"TITLE": "Configuration"
 	},
@@ -23,5 +19,27 @@
 		"OF_LABEL": "of",
 		"PREVIOUS_PAGE": "Previous page"
 	},
-	"SAVE": "Save"
+	"SAVE": "Save",
+	"VIEW": {
+		"ATTACHMENTS": "Attachments",
+		"DETAILS": "Details",
+		"FIELDS": {
+			"CODE": "License code",
+			"END_DATE": "End date",
+			"LICENSING_AGENT": "Licensing agent",
+			"LICENSOR": "Licensor",
+			"LOCATION": "License location",
+			"NAME": "License name",
+			"REVIEW_STATUS": "License review status",
+			"SIGNED_BY": "Signed by",
+			"SIGNED_ON": "Signed on",
+			"START_DATE": "Start date",
+			"STATUS": "License status",
+			"URI": "License URI"
+		},
+		"LICENSE_TERMS": "License Terms"
+	},
+	"code": "Code",
+	"licensor": "Licensor",
+	"name": "Name"
 }
