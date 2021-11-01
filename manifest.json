@@ -1,0 +1,23 @@
+{
+   "id": "copy-license",
+   "title": "Copy License",
+   "subtitle": "Copy a license from another institution",
+   "author": "Ex Libris",
+   "description": "Supports searching licenses in another institution (via configured proxy server) and copying into location institution, including attachments.",
+   "icon": {
+      "type": "url",
+      "value": "/assets/alma-copy-license-icon.png"
+   },
+   "contentSecurity": {
+      "connectSrc": [
+         "https://*.execute-api.eu-central-1.amazonaws.com/ "
+      ]
+   },
+   "pages": {
+      "config": "/#/config"
+   },
+   "fullscreen": {
+      "allow": true,
+      "open": false
+   }
+}

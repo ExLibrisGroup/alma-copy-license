@@ -1,0 +1,27 @@
+{
+	"BACK": "Back",
+	"CONFIGURATION": {
+		"DISCARD": "Discard changes?",
+		"DISCARD_OK": "Yes, discard changes",
+		"INST_CODES": {
+			"ADD": "Add Institution Code",
+			"TITLE": "Institution Codes"
+		},
+		"REST_PROXY_URL": "Proxy URL",
+		"TITLE": "Configuration"
+	},
+	"MAIN": {
+		"CLEAR": "Clear",
+		"COPY": "Copy license",
+		"INST_CODE": "Institution",
+		"SEARCH": "Search",
+		"VIEW": "View"
+	},
+	"PAGINATOR": {
+		"ITEMS_PER_PAGE": "Items per page",
+		"NEXT_PAGE": "Next page",
+		"OF_LABEL": "of",
+		"PREVIOUS_PAGE": "Previous page"
+	},
+	"SAVE": "Save"
+}
