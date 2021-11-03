@@ -77,7 +77,7 @@
     </mat-tab>
   </mat-tab-group>
 </div>
-<div class="loading-shade" *ngIf="saving">
+<div class="loading-shade" *ngIf="loading">
   <mat-progress-spinner mode="indeterminate" diameter="50"></mat-progress-spinner>
 </div>
 <ng-template #emptyList>
@@ -85,8 +85,4 @@
     <span class="uxf-icon uxf-list" style="font-size: 3em;"></span>
   </div>
 </ng-template>
-<!--
-<pre *ngIf="license">
-  {{license | json}}
-</pre>
--->
+<app-copy-license [(loading)]="loading"></app-copy-license>

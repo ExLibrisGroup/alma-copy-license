@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { of } from "rxjs";
 import { tap } from "rxjs/operators";
+import { Licenses } from "../models/alma";
 import { RestProxyService } from "./rest-proxy.service";
 
 @Injectable({
@@ -8,6 +9,8 @@ import { RestProxyService } from "./rest-proxy.service";
 })
 export class DataService {
   private _instCodes: string[];
+  searchTerm: string = "";
+  licenses: Licenses;
 
   constructor(
     private rest: RestProxyService,

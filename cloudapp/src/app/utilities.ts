@@ -1,3 +1,4 @@
+import { RestErrorResponse } from '@exlibris/exl-cloudapp-angular-lib'
 /**
  * Downloads a file
  * @param filename 
@@ -14,4 +15,18 @@ const download = (filename: string, filetype: string, contents: string) => {
   document.body.removeChild(element);
 };
 
-export { download };
+export interface RestError {
+  errorCode: string;
+  errorMessage: string;
+  trackingId: string;
+}
+
+const parseAlmaError = (e: RestErrorResponse) => {
+  return e.error.errorList?.error?.[0] as RestError;
+}
+
+const isEmptyValue = (value: any, key: string) => {
+  return value.value !== undefined && value.value === null;
+}
+
+export { download, parseAlmaError, isEmptyValue };

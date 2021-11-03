@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertService } from '@exlibris/exl-cloudapp-angular-lib';
 import { forkJoin } from 'rxjs';
@@ -6,6 +6,7 @@ import { finalize } from 'rxjs/operators';
 import { download } from '../utilities';
 import { Attachment, License } from '../models/alma';
 import { RemoteAlmaService } from '../services/remote-alma.service';
+import { CopyLicenseComponent } from '../main/copy-license.component';
 
 @Component({
   selector: 'app-view-license',
@@ -13,13 +14,14 @@ import { RemoteAlmaService } from '../services/remote-alma.service';
   styleUrls: ['./view-license.component.scss']
 })
 export class ViewLicenseComponent implements OnInit {
-  saving = false;
+  loading = false;
   license: License;
   attachments: Attachment[];
+  @ViewChild(CopyLicenseComponent) copyLicense: CopyLicenseComponent;
 
   constructor(
     private route: ActivatedRoute,
-    private alma: RemoteAlmaService,
+    private remote: RemoteAlmaService,
     private alert: AlertService,
     private router: Router,
   ) { }
@@ -27,12 +29,12 @@ export class ViewLicenseComponent implements OnInit {
   ngOnInit() {
     const licenseCode = this.route.snapshot.params['licenseCode'];
     if (!licenseCode) this.router.navigate(['']);
-    this.saving = true;
+    this.loading = true;
     forkJoin([
-      this.alma.getLicense(licenseCode),
-      this.alma.getAttachments(licenseCode),
+      this.remote.getLicense(licenseCode),
+      this.remote.getAttachments(licenseCode),
     ])
-    .pipe(finalize(() => this.saving = false))
+    .pipe(finalize(() => this.loading = false))
     .subscribe({
       next: results => {
         const [license, attachments] = results;
@@ -44,13 +46,17 @@ export class ViewLicenseComponent implements OnInit {
   }
 
   downloadAttachment(id: string) {
-    this.saving = true;
-    this.alma.getAttachment(this.license.code, id)
-    .pipe(finalize(() => this.saving = false))
+    this.loading = true;
+    this.remote.getAttachment(this.license.code, id)
+    .pipe(finalize(() => this.loading = false))
     .subscribe({
       next: attachment => download(attachment.file_name, attachment.type, attachment.content),
       error: e => this.alert.error(e.message),
     })
+  }
+
+  copy() {
+    this.copyLicense.copyLicense(this.license.code);
   }
 
   get terms() {

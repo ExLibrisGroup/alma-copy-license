@@ -5,9 +5,10 @@ import { RestProxyService } from '../services/rest-proxy.service';
 import { RemoteAlmaService } from '../services/remote-alma.service';
 import { marker as _ } from '@biesbjerg/ngx-translate-extract-marker';
 import { finalize } from 'rxjs/operators';
-import { Licenses, PageOptions } from '../models/alma';
+import { PageOptions } from '../models/alma';
 import { PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
+import { CopyLicenseComponent } from './copy-license.component';
 
 export const STORE_INST_CODE = 'INST_CODE';
 export const STORE_SEARCH_TYPE = 'SEARCH_TYPE';
@@ -19,12 +20,11 @@ export const STORE_SEARCH_TYPE = 'SEARCH_TYPE';
 })
 export class MainComponent implements OnInit, OnDestroy {
   @ViewChild('searchTermInput') searchTermInput: ElementRef;
+  @ViewChild(CopyLicenseComponent) copyLicense: CopyLicenseComponent;
   loading = false;
   instCodes: string[] = [];
-  searchTerm: string = "";
   searchType: string;
   searchOptions = [ _('name'), _('code'), _('licensor')];
-  results: Licenses;
   selectedLicense: string;
 
   private _instCode: string;
@@ -42,14 +42,17 @@ export class MainComponent implements OnInit, OnDestroy {
     private alert: AlertService,
     private rest: RestProxyService,
     private data: DataService,
-    private alma: RemoteAlmaService,
+    private remote: RemoteAlmaService,
     private router: Router,
   ) { }
 
   ngOnInit() {
     this.data.getInstCodes()
     .subscribe({
-      next: instCodes => this.instCodes = instCodes,
+      next: instCodes => {
+        this.instCodes = instCodes;
+        if (instCodes.length == 1) this.instCode = instCodes[0];
+      },
       error: e => this.alert.error(e.message),
     });
     this.store.get(STORE_INST_CODE).subscribe(val => this.instCode = val);
@@ -81,10 +84,10 @@ export class MainComponent implements OnInit, OnDestroy {
 
   getLicenses(page: PageOptions = undefined) {
     this.loading = true;
-    return this.alma.getLicenses(this.searchTerm, this.searchType, page)
+    return this.remote.getLicenses(this.data.searchTerm, this.searchType, page)
     .pipe(finalize(() => this.loading = false))
     .subscribe({
-      next: licenses => this.results = licenses,
+      next: licenses => this.data.licenses = licenses,
       error: e => this.alert.error(e.message),
     });;
   }
@@ -92,5 +95,9 @@ export class MainComponent implements OnInit, OnDestroy {
   view() {
     const params = {licenseCode: this.selectedLicense};
     this.router.navigate(['view', params]);
+  }
+
+  copy() {
+    this.copyLicense.copyLicense(this.selectedLicense);
   }
 }

@@ -6,10 +6,16 @@
 		"REST_PROXY_URL": "Proxy URL",
 		"TITLE": "Configuration"
 	},
+	"COPY_LICENSE": {
+		"CONFIRM": "Copy license {{ code }} into local institution?",
+		"CONFIRM_OK": "Yes, copy license",
+		"SUCCESS": "License code {{ code }} successfully created."
+	},
 	"MAIN": {
 		"CLEAR": "Clear",
 		"COPY": "Copy license",
 		"INST_CODE": "Institution",
+		"INTRO": "Search for a license in the remote institution. View the selected license or copy it to your institution.",
 		"SEARCH": "Search",
 		"VIEW": "View"
 	},

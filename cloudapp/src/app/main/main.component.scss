@@ -1,5 +1,6 @@
 .mat-form-field {
   width: 100%;
+  max-width: 400px;
 }
 .carrot {
   display: inline-block!important;
@@ -9,7 +10,6 @@
   flex-direction: column;
   margin: 15px 0;
 }
-
 .mat-radio-button {
   margin: 5px;
 }

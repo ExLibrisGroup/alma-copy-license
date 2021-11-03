@@ -11,4 +11,7 @@
     .mat-form-field-multipart .mat-form-field-infix {
         display: inherit;
     }
+    app-main .mat-paginator-container {
+        padding: 0 4px;
+    }
 }

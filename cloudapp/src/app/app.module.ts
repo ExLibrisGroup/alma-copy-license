@@ -13,6 +13,7 @@ import { ConfigurationComponent } from './configuration/configuration.component'
 import { CustomMatPaginatorIntl } from './mat-paginator-intl';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { ViewLicenseComponent } from './view-license/view-license.component';
+import { CopyLicenseComponent } from './main/copy-license.component';
 
 @NgModule({
   declarations: [		
@@ -20,6 +21,7 @@ import { ViewLicenseComponent } from './view-license/view-license.component';
     MainComponent,
     ConfigurationComponent,
     ViewLicenseComponent,
+    CopyLicenseComponent,
    ],
   imports: [
     MaterialModule,

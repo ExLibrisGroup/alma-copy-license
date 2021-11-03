@@ -3,7 +3,8 @@
   <button mat-flat-button type="button" color="secondary" (click)="view()" [disabled]="!selectedLicense">{{ 'MAIN.VIEW' | translate}}</button>
   <button mat-flat-button type="button" color="primary" (click)="copy()" [disabled]="!selectedLicense">{{ 'MAIN.COPY' | translate}}</button>
 </div>
-<mat-form-field>
+<p translate>MAIN.INTRO</p>
+<mat-form-field *ngIf="instCodes?.length > 1">
   <mat-label>{{ 'MAIN.INST_CODE' | translate }}</mat-label>
   <mat-select [(ngModel)]="instCode">
     <mat-option *ngFor="let code of instCodes" [value]="code">{{code}}</mat-option>
@@ -11,7 +12,7 @@
 </mat-form-field>
 <mat-form-field>
   <mat-label>{{ 'MAIN.SEARCH' | translate }} {{ searchType | translate }}</mat-label>
-  <input matInput #searchTermInput [(ngModel)]="searchTerm" (keydown.enter)="search()">
+  <input matInput #searchTermInput [(ngModel)]="data.searchTerm" (keydown.enter)="search()">
   <mat-button-toggle-group matSuffix>
     <mat-button-toggle mat-flat-button color="secondary"  (click)="search()">
       <mat-icon class="carrot">search</mat-icon>
@@ -24,15 +25,15 @@
 <mat-menu #searchMenu="matMenu">
   <button mat-menu-item *ngFor="let option of searchOptions" (click)="setSearchType(option); searchTermInput.focus()">{{ option | translate }}</button>
 </mat-menu>
-<div *ngIf="results">
+<div *ngIf="data.licenses">
   <mat-radio-group 
     [(ngModel)]="selectedLicense">
-    <mat-radio-button *ngFor="let result of results.license" [value]="result.code">
+    <mat-radio-button *ngFor="let result of data.licenses.license" [value]="result.code">
       {{result.code}} / {{result.name}}
     </mat-radio-button>
   </mat-radio-group>
   <mat-paginator 
-    [length]="results.total_record_count"
+    [length]="data.licenses.total_record_count"
     [pageSize]="10"
     [pageSizeOptions]="[10, 25, 50]"
     (page)="page($event)"
@@ -42,3 +43,4 @@
 <div class="loading-shade" *ngIf="loading">
   <mat-spinner diameter="50"></mat-spinner>
 </div>
+<app-copy-license [(loading)]="loading"></app-copy-license>

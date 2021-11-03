@@ -8,6 +8,7 @@ export interface License {
   code: string;
   name: string;
   licensor: Value;
+  status: Value;
   term: Term[];
 }
 
