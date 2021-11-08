@@ -9,6 +9,7 @@ import { PageOptions } from '../models/alma';
 import { PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { CopyLicenseComponent } from './copy-license.component';
+import { mapi18n } from '../utilities';
 
 export const STORE_INST_CODE = 'INST_CODE';
 export const STORE_SEARCH_TYPE = 'SEARCH_TYPE';
@@ -24,7 +25,7 @@ export class MainComponent implements OnInit, OnDestroy {
   loading = false;
   instCodes: string[] = [];
   searchType: string;
-  searchOptions = [ _('name'), _('code'), _('licensor')];
+  searchOptions = [ _('SEARCH_OPTIONS.NAME'), _('SEARCH_OPTIONS.CODE'), _('SEARCH_OPTIONS.LICENSOR')];
   selectedLicense: string;
 
   private _instCode: string;
@@ -84,7 +85,8 @@ export class MainComponent implements OnInit, OnDestroy {
 
   getLicenses(page: PageOptions = undefined) {
     this.loading = true;
-    return this.remote.getLicenses(this.data.searchTerm, this.searchType, page)
+    const searchType = mapi18n(this.searchType).toLowerCase()
+    return this.remote.getLicenses(this.data.searchTerm, searchType, page)
     .pipe(finalize(() => this.loading = false))
     .subscribe({
       next: licenses => this.data.licenses = licenses,

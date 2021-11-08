@@ -1,3 +1,4 @@
+import { Pipe, PipeTransform } from '@angular/core';
 import { RestErrorResponse } from '@exlibris/exl-cloudapp-angular-lib'
 /**
  * Downloads a file
@@ -29,4 +30,15 @@ const isEmptyValue = (value: any, key: string) => {
   return value.value !== undefined && value.value === null;
 }
 
-export { download, parseAlmaError, isEmptyValue };
+const mapi18n = (val: string) => {
+  return val.substr(val.lastIndexOf('.') + 1);
+}
+
+@Pipe({name: 'mapi18n'})
+export class Mapi18nPipe implements PipeTransform {
+  transform(value: string): string {
+    return mapi18n(value);
+  }
+}
+
+export { download, parseAlmaError, isEmptyValue, mapi18n };

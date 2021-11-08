@@ -5,6 +5,7 @@ import { CloudAppEventsService, HttpMethod, Request } from '@exlibris/exl-clouda
 import { catchError, switchMap, tap } from 'rxjs/operators';
 import { merge, mapKeys } from 'lodash';
 import { ConfigurationService } from './configuration.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,7 @@ export class RestProxyService {
     private http: HttpClient, 
     private eventsService: CloudAppEventsService,
     private configurationService: ConfigurationService,
+    private translate: TranslateService,
     ) { }
 
   call<T = any>(request: string | Request): Observable<T> {
@@ -31,6 +33,10 @@ export class RestProxyService {
     .pipe(
       switchMap(results => {
         const [configuration, token] = results;
+        if (!configuration.restProxyUrl) {
+          const msg = this.translate.instant('CONFIGURATION.NO_PROXY_DEFINED');
+          throw new Error(msg);
+        };
         const url = configuration.restProxyUrl + req.url;
         const headers = 
           new HttpHeaders(
@@ -39,7 +45,7 @@ export class RestProxyService {
                 'content-type': 'application/json',
                 'accept': 'application/json',
                 'authorization': `Bearer ${token}`,
-                'x-for-instcode': this.instCode
+                'x-for-instcode': this.instCode || '',
               }, 
               mapKeys(req.headers, (v, k) => k.toLowerCase())
             )

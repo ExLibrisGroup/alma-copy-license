@@ -15,7 +15,7 @@
     aria-labelledby="existing-license-label"
     class="radio-group"
     formControlName="existingLicense">
-    <mat-radio-button class="radio-button" *ngFor="let option of existingLicenseOptions" [value]="option">
+    <mat-radio-button class="radio-button" *ngFor="let option of existingLicenseOptions" [value]="option | mapi18n">
       {{ option | translate }}
     </mat-radio-button>
   </mat-radio-group>

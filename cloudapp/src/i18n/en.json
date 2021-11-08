@@ -4,6 +4,7 @@
 		"DISCARD": "Discard changes?",
 		"DISCARD_OK": "Yes, discard changes",
 		"EXISTING_LICENSE": "Handling for existing license:",
+		"NO_PROXY_DEFINED": "Proxy URL is not configured",
 		"REST_PROXY_URL": "Proxy URL",
 		"TITLE": "Configuration"
 	},
@@ -11,6 +12,11 @@
 		"CONFIRM": "Copy license {{ code }} into local institution?",
 		"CONFIRM_OK": "Yes, copy license",
 		"SUCCESS": "License code {{ code }} successfully created."
+	},
+	"EXISTING_LICENSE": {
+		"OVERWRITE_ALL": "Overwrite all",
+		"OVERWRITE_DELETED": "Overwrite only licenses in \"deleted\" status",
+		"OVERWRITE_NONE": "Do not overwrite"
 	},
 	"LICENSE_EXISTS": "License {{ code }} already exists",
 	"MAIN": {
@@ -28,6 +34,11 @@
 		"PREVIOUS_PAGE": "Previous page"
 	},
 	"SAVE": "Save",
+	"SEARCH_OPTIONS": {
+		"CODE": "Code",
+		"LICENSOR": "Licensor",
+		"NAME": "Name"
+	},
 	"VIEW": {
 		"ATTACHMENTS": "Attachments",
 		"DETAILS": "Details",
@@ -46,11 +57,5 @@
 			"URI": "License URI"
 		},
 		"LICENSE_TERMS": "License Terms"
-	},
-	"code": "Code",
-	"licensor": "Licensor",
-	"name": "Name",
-	"overwrite_all": "Overwrite all",
-	"overwrite_deleted": "Overwrite only licenses in \"deleted\" status",
-	"overwrite_none": "Do not overwrite"
+	}
 }

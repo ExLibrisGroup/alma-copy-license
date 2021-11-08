@@ -14,6 +14,7 @@ import { CustomMatPaginatorIntl } from './mat-paginator-intl';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { ViewLicenseComponent } from './view-license/view-license.component';
 import { CopyLicenseComponent } from './main/copy-license.component';
+import { Mapi18nPipe } from './utilities';
 
 @NgModule({
   declarations: [		
@@ -22,6 +23,7 @@ import { CopyLicenseComponent } from './main/copy-license.component';
     ConfigurationComponent,
     ViewLicenseComponent,
     CopyLicenseComponent,
+    Mapi18nPipe,
    ],
   imports: [
     MaterialModule,
