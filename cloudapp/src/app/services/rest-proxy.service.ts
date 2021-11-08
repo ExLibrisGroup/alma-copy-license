@@ -59,7 +59,7 @@ export class RestProxyService {
     )
   }
 
-  getToken() {
+  private getToken() {
     if (this._token) return of(this._token);
     return this.eventsService.getAuthToken()
     .pipe(tap(token => this._token = token));

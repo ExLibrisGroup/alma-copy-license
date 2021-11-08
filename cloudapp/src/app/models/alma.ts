@@ -12,6 +12,9 @@ export interface License {
   term: Term[];
 }
 
+export const licenseDeleted = (license: License) => 
+  license && license.status.value == 'DELETED';
+
 export interface Term {
   code: Value;
   value: Value;

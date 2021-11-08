@@ -10,6 +10,15 @@
     <mat-label>{{'CONFIGURATION.REST_PROXY_URL' | translate}}</mat-label>
     <input matInput required formControlName="restProxyUrl">
   </mat-form-field>
+  <label id="existing-license-label" translate>CONFIGURATION.EXISTING_LICENSE</label>
+  <mat-radio-group
+    aria-labelledby="existing-license-label"
+    class="radio-group"
+    formControlName="existingLicense">
+    <mat-radio-button class="radio-button" *ngFor="let option of existingLicenseOptions" [value]="option">
+      {{ option | translate }}
+    </mat-radio-button>
+  </mat-radio-group>
 </form>
 
 <div class="loading-shade" *ngIf="saving">

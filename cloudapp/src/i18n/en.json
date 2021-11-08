@@ -3,6 +3,7 @@
 	"CONFIGURATION": {
 		"DISCARD": "Discard changes?",
 		"DISCARD_OK": "Yes, discard changes",
+		"EXISTING_LICENSE": "Handling for existing license:",
 		"REST_PROXY_URL": "Proxy URL",
 		"TITLE": "Configuration"
 	},
@@ -11,6 +12,7 @@
 		"CONFIRM_OK": "Yes, copy license",
 		"SUCCESS": "License code {{ code }} successfully created."
 	},
+	"LICENSE_EXISTS": "License {{ code }} already exists",
 	"MAIN": {
 		"CLEAR": "Clear",
 		"COPY": "Copy license",
@@ -47,5 +49,8 @@
 	},
 	"code": "Code",
 	"licensor": "Licensor",
-	"name": "Name"
+	"name": "Name",
+	"overwrite_all": "Overwrite all",
+	"overwrite_deleted": "Overwrite only licenses in \"deleted\" status",
+	"overwrite_none": "Do not overwrite"
 }

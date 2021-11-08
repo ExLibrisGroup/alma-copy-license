@@ -1,6 +1,6 @@
 import { Component, Injectable, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { configurationFormGroup } from '../models/configuration';
+import { configurationFormGroup, ExistingLicenseOptions } from '../models/configuration';
 import { ConfigurationService } from '../services/configuration.service';
 import { marker as _ } from '@biesbjerg/ngx-translate-extract-marker';
 import { DialogService } from 'eca-components';
@@ -17,6 +17,7 @@ export class ConfigurationComponent implements OnInit {
 
   form: FormGroup;
   saving = false;
+  existingLicenseOptions = ExistingLicenseOptions;
   
   constructor(
     private configurationService: ConfigurationService,
