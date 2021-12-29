@@ -57,7 +57,7 @@ export class MainComponent implements OnInit, OnDestroy {
       error: e => this.alert.error(e.message),
     });
     this.store.get(STORE_INST_CODE).subscribe(val => this.instCode = val);
-    this.store.get(STORE_SEARCH_TYPE).subscribe(val => this.searchType = val || 'name');
+    this.store.get(STORE_SEARCH_TYPE).subscribe(val => this.searchType = val || this.searchOptions[0]);
   }
 
   ngAfterViewInit() {
