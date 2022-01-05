@@ -43,8 +43,8 @@ export class AlmaService {
   }
 
   private checkExistingLicenseCondition(configuration: Configuration, license: License) {
-    const failed = configuration.existingLicense == 'overwrite_none' ||
-      (configuration.existingLicense == 'overwrite_deleted' && !licenseDeleted(license));
+    const failed = configuration.existingLicense == 'OVERWRITE_NONE' ||
+      (configuration.existingLicense == 'OVERWRITE_DELETED' && !licenseDeleted(license));
     return !failed;
   }
 

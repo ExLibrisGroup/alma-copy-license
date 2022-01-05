@@ -75,6 +75,14 @@
         </mat-list-item>
       </mat-list>
     </mat-tab>
+    <mat-tab label="{{ 'VIEW.AMENDMENTS' | translate }}">
+      <mat-list role="list" *ngIf="amendments.length > 0; else emptyList">
+        <mat-list-item role="listitem" *ngFor="let amendment of amendments">
+          {{ amendment.code }} / {{ amendment.name }}
+          <!-- <i class="uxf-icon uxf-download eca-button" (click)="downloadAttachment(attachment.id)"></i> -->
+        </mat-list-item>
+      </mat-list>
+    </mat-tab>
   </mat-tab-group>
 </div>
 <div class="loading-shade" *ngIf="loading">

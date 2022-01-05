@@ -41,6 +41,7 @@
 	},
 	"VIEW": {
 		"ATTACHMENTS": "Attachments",
+		"AMENDMENTS": "Amendments",
 		"DETAILS": "Details",
 		"FIELDS": {
 			"CODE": "License code",

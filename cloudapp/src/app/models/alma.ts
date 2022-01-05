@@ -42,3 +42,14 @@ export interface Attachment {
   type: string;
   content: string;
 }
+
+export interface Amendments {
+  total_record_count: number;
+  license: Amendment[];
+}
+
+export interface Amendment {
+  link: string;
+  code: string;
+  name: string;
+}

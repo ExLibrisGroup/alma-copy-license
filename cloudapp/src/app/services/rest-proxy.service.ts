@@ -37,7 +37,8 @@ export class RestProxyService {
           const msg = this.translate.instant('CONFIGURATION.NO_PROXY_DEFINED');
           throw new Error(msg);
         };
-        const url = configuration.restProxyUrl + req.url;
+        const url =  'https://api-ap.exldevnetwork.net/proxy'+ req.url ;
+        const key = configuration.restProxyUrl;
         const headers = 
           new HttpHeaders(
             merge(
@@ -45,7 +46,8 @@ export class RestProxyService {
                 'content-type': 'application/json',
                 'accept': 'application/json',
                 'authorization': `Bearer ${token}`,
-                'x-for-instcode': this.instCode || '',
+                'X-Proxy-Auth': 'apikey '+ key,
+                'X-Proxy-Host': 'api-eu.hosted.exlibrisgroup.com',
               }, 
               mapKeys(req.headers, (v, k) => k.toLowerCase())
             )

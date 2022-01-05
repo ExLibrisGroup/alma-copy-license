@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Attachment, Attachments, License, Licenses, PageOptions } from "../models/alma";
+import { Amendment, Attachment, Attachments, License, Licenses, PageOptions, Amendments } from "../models/alma";
 import { RestProxyService } from "./rest-proxy.service";
 
 @Injectable({
@@ -31,4 +31,13 @@ export class RemoteAlmaService {
   getAttachment(code: string, id: string) {
     return this.rest.call<Attachment>(`/almaws/v1/acq/licenses/${code}/attachments/${id}?expand=content`)
   }
+
+  getAmendments(code: string) {
+    return this.rest.call<Amendments>(`/almaws/v1/acq/licenses/${code}/amendments`);
+  }
+
+  // getAmendment(code: string, amendment_code: string) {
+  //   return this.rest.call<Amendment>(`/almaws/v1/acq/licenses/${code}/amendments/${amendment_code}?expand=content`)
+  // }
+
 }

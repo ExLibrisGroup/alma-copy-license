@@ -4,7 +4,7 @@ import { AlertService } from '@exlibris/exl-cloudapp-angular-lib';
 import { forkJoin } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { download } from '../utilities';
-import { Attachment, License } from '../models/alma';
+import { Attachment, License, Amendment } from '../models/alma';
 import { RemoteAlmaService } from '../services/remote-alma.service';
 import { CopyLicenseComponent } from '../main/copy-license.component';
 
@@ -17,6 +17,7 @@ export class ViewLicenseComponent implements OnInit {
   loading = false;
   license: License;
   attachments: Attachment[];
+  amendments : Amendment[];
   @ViewChild(CopyLicenseComponent) copyLicense: CopyLicenseComponent;
 
   constructor(
@@ -28,18 +29,25 @@ export class ViewLicenseComponent implements OnInit {
 
   ngOnInit() {
     const licenseCode = this.route.snapshot.params['licenseCode'];
+    
     if (!licenseCode) this.router.navigate(['']);
     this.loading = true;
     forkJoin([
       this.remote.getLicense(licenseCode),
       this.remote.getAttachments(licenseCode),
+      this.remote.getAmendments(licenseCode),
     ])
     .pipe(finalize(() => this.loading = false))
     .subscribe({
       next: results => {
-        const [license, attachments] = results;
+        const [license, attachments, amendments] = results;
+        console.log(license);
+        console.log(attachments);
+        console.log(amendments);
+        
         this.license = license;
         this.attachments = attachments.attachment.filter(a => !!a.file_name);
+        this.amendments = amendments.license.filter(a => !!a.name);
       },
       error: e => this.alert.error(e.message),
     })

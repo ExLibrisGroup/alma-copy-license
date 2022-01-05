@@ -48,15 +48,6 @@ export class MainComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.data.getInstCodes()
-    .subscribe({
-      next: instCodes => {
-        this.instCodes = instCodes;
-        if (instCodes.length == 1) this.instCode = instCodes[0];
-      },
-      error: e => this.alert.error(e.message),
-    });
-    this.store.get(STORE_INST_CODE).subscribe(val => this.instCode = val);
     this.store.get(STORE_SEARCH_TYPE).subscribe(val => this.searchType = val || this.searchOptions[0]);
   }
 
