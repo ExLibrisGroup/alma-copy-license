@@ -1,13 +1,13 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { AlertService, CloudAppRestService, HttpMethod } from "@exlibris/exl-cloudapp-angular-lib";
+import { AlertService, CloudAppRestService } from "@exlibris/exl-cloudapp-angular-lib";
 import { marker as _ } from '@biesbjerg/ngx-translate-extract-marker';
 import { DialogService } from "eca-components";
 import { RemoteAlmaService } from "../services/remote-alma.service";
-import { catchError, concatMap, finalize, map, mergeMap } from "rxjs/operators";
+import { concatMap, finalize, mergeMap } from "rxjs/operators";
 import { AlmaService } from "../services/alma.service";
 import { TranslateService } from "@ngx-translate/core";
 import { License } from "../models/alma";
-import { from, Observable, of } from "rxjs";
+import { from } from "rxjs";
 
 
 @Component({

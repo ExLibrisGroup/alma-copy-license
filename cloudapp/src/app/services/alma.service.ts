@@ -4,7 +4,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { omitBy } from "lodash";
 import { forkJoin, Observable, of } from "rxjs";
 import { catchError, map, mergeMap } from "rxjs/operators";
-import { Amendment, Amendments, License, licenseDeleted } from "../models/alma";
+import { Amendment, License, licenseDeleted } from "../models/alma";
 import { Configuration } from "../models/configuration";
 import { isEmptyValue, parseAlmaError } from "../utilities";
 import { ConfigurationService } from "./configuration.service";
@@ -32,7 +32,7 @@ export class AlmaService {
       this.createVendor(vendor),
     ])
     .pipe(
-      map(([configuration, existingLicense, vendor]) => {
+      map(([configuration, existingLicense]) => {
        
         if (existingLicense && !this.checkExistingLicenseCondition(configuration, existingLicense)) {
           const msg = this.translate.instant('LICENSE_EXISTS', { code: license.code })
