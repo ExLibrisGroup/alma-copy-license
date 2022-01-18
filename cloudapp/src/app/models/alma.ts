@@ -52,4 +52,10 @@ export interface Amendment {
   link: string;
   code: string;
   name: string;
+  licensor: {value: string, desc: string};
+}
+
+export interface Vendor {
+  code: string;
+  name: string;
 }

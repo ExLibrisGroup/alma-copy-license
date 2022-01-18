@@ -4,14 +4,18 @@
 		"DISCARD": "Discard changes?",
 		"DISCARD_OK": "Yes, discard changes",
 		"EXISTING_LICENSE": "Handling for existing license:",
-		"NO_PROXY_DEFINED": "Proxy URL is not configured",
-		"REST_PROXY_URL": "Proxy URL",
+		"NO_API_KEY_DEFINED": "API Key is not configured",
+		"API_KEY": "API Key",
 		"TITLE": "Configuration"
 	},
 	"COPY_LICENSE": {
 		"CONFIRM": "Copy license {{ code }} into local institution?",
 		"CONFIRM_OK": "Yes, copy license",
-		"SUCCESS": "License code {{ code }} successfully created."
+		"SUCCESS": "License code {{ code }} successfully created.",
+		"AMENDMENTS_ADDED": "Amendments created: {{ amendments }}",
+		"AMENDMENT_FAILED": "Failed to create amendments code '{{ code }}'.",
+		"VENDORS_ADDED": "Vendors created: {{ vendors }}",
+		"VENDOR_FAILED": "Failed to create vendor code '{{ code }}'."
 	},
 	"EXISTING_LICENSE": {
 		"OVERWRITE_ALL": "Overwrite all",

@@ -1,6 +1,6 @@
 {
-   "id": "exlibrisgroup/alma-copy-license",
-   "title": "Copy License",
+   "id": "exlibrisgroup/download-network-zone-license",
+   "title": "Download Network Zone License",
    "subtitle": "Copy a license from another institution",
    "author": "Ex Libris",
    "description": "Supports searching licenses in another institution (via configured proxy server) and copying into location institution, including attachments.",

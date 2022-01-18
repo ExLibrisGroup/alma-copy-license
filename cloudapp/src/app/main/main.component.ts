@@ -5,7 +5,7 @@ import { RestProxyService } from '../services/rest-proxy.service';
 import { RemoteAlmaService } from '../services/remote-alma.service';
 import { marker as _ } from '@biesbjerg/ngx-translate-extract-marker';
 import { finalize } from 'rxjs/operators';
-import { PageOptions } from '../models/alma';
+import { License, PageOptions } from '../models/alma';
 import { PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { CopyLicenseComponent } from './copy-license.component';
@@ -26,7 +26,7 @@ export class MainComponent implements OnInit, OnDestroy {
   instCodes: string[] = [];
   searchType: string;
   searchOptions = [ _('SEARCH_OPTIONS.NAME'), _('SEARCH_OPTIONS.CODE'), _('SEARCH_OPTIONS.LICENSOR')];
-  selectedLicense: string;
+  selectedLicense: License;
 
   private _instCode: string;
   get instCode() {
@@ -86,11 +86,11 @@ export class MainComponent implements OnInit, OnDestroy {
   }
 
   view() {
-    const params = {licenseCode: this.selectedLicense};
+    const params = {licenseCode: this.selectedLicense.code};
     this.router.navigate(['view', params]);
   }
 
   copy() {
-    this.copyLicense.copyLicense(this.selectedLicense);
+    this.copyLicense.copyLicense(this.selectedLicense.code, this.selectedLicense.licensor.value);
   }
 }

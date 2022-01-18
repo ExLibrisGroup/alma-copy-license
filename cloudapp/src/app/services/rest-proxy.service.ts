@@ -34,7 +34,7 @@ export class RestProxyService {
       switchMap(results => {
         const [configuration, token] = results;
         if (!configuration.restProxyUrl) {
-          const msg = this.translate.instant('CONFIGURATION.NO_PROXY_DEFINED');
+          const msg = this.translate.instant('CONFIGURATION.NO_API_KEY_DEFINED');
           throw new Error(msg);
         };
         const url =  'https://api-ap.exldevnetwork.net/proxy'+ req.url ;

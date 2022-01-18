@@ -31,7 +31,7 @@
 <div *ngIf="data.licenses">
   <mat-radio-group 
     [(ngModel)]="selectedLicense">
-    <mat-radio-button *ngFor="let result of data.licenses.license" [value]="result.code">
+    <mat-radio-button *ngFor="let result of data.licenses.license" [value]="result">
       {{result.code}} / {{result.name}}
     </mat-radio-button>
   </mat-radio-group>

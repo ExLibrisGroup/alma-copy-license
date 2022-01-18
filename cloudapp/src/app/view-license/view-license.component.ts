@@ -40,7 +40,7 @@ export class ViewLicenseComponent implements OnInit {
     .pipe(finalize(() => this.loading = false))
     .subscribe({
       next: results => {
-        const [license, attachments, amendments] = results;
+        const [license, attachments, amendments ] = results;
         console.log(license);
         console.log(attachments);
         console.log(amendments);
@@ -64,7 +64,7 @@ export class ViewLicenseComponent implements OnInit {
   }
 
   copy() {
-    this.copyLicense.copyLicense(this.license.code);
+    this.copyLicense.copyLicense(this.license.code, this.license.licensor.value);
   }
 
   get terms() {
