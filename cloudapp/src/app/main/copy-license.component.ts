@@ -39,9 +39,10 @@ export class CopyLicenseComponent implements OnInit {
     .subscribe(result => {
       if (!result) return;
       this.alert.clear();
+      this.alma.vendors_created = 0;
+      this.alma.amendments_created = 0;
       this.loadingChange.emit(true);
       this.remote.getVendor(vendor_code).subscribe(vendor => {
-
         this.remote.getLicense(code)
         .pipe(
           mergeMap(license => this.alma.createLicense(license, vendor)),
@@ -71,14 +72,10 @@ export class CopyLicenseComponent implements OnInit {
           return this.alma.createAmendment(license.code, amendment);
         }),
         finalize(() => {
-          const msg = this.translate.instant('COPY_LICENSE.SUCCESS', { code: license.code })
-          const amendments_msg = this.translate.instant('COPY_LICENSE.AMENDMENTS_ADDED', { amendments: this.alma.amendments_created })
           const vendors_msg = this.translate.instant('COPY_LICENSE.VENDORS_ADDED', {vendors: this.alma.vendors_created})
+          const amendments_msg = this.translate.instant('COPY_LICENSE.AMENDMENTS_ADDED', { amendments: this.alma.amendments_created })
+          const msg = this.translate.instant('COPY_LICENSE.SUCCESS', { code: license.code }) + " - " + vendors_msg + " - " + amendments_msg
           this.alert.success(msg, { autoClose: false });
-          this.alert.success(vendors_msg, { autoClose: false });
-          this.alert.success(amendments_msg, { autoClose: false });
-          this.alma.vendors_created = 0;
-          this.alma.amendments_created = 0;
           this.loadingChange.emit(false);
         })
       ).subscribe()

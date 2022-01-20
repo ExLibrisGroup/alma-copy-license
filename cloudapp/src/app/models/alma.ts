@@ -10,6 +10,7 @@ export interface License {
   licensor: Value;
   status: Value;
   term: Term[];
+  type: {value: string, desc: string};
 }
 
 export const licenseDeleted = (license: License) => 

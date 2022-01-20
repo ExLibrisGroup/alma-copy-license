@@ -11,11 +11,12 @@ export class RemoteAlmaService {
     private rest: RestProxyService,
   ) {}
 
-  getLicenses(term: string, type: string = "name", page: PageOptions = { limit: 10, offset: 0 }) {
+  getLicenses(term: string, type: string = "name", page: PageOptions = { limit: 10, offset: 0 }, licenseType: string) {
     const queryParams = {
       q: `${type}~${encodeURIComponent(term)}`,
       limit: page.limit,
       offset: page.offset,
+      type: licenseType,
     } 
     return this.rest.call<Licenses>({ url: '/almaws/v1/acq/licenses', queryParams })
   }

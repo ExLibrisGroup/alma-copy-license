@@ -2,14 +2,26 @@
   width: 100%;
   max-width: 400px;
 }
+
 .carrot {
   display: inline-block!important;
 }
-.mat-radio-group {
+
+.radio-row{
+  
+    display: flex;
+    flex-direction: row;
+    margin: 15px 0;
+}
+
+.radio-column{
   display: flex;
   flex-direction: column;
   margin: 15px 0;
 }
+
 .mat-radio-button {
   margin: 5px;
 }
+
+

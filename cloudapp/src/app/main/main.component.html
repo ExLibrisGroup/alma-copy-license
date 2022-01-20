@@ -4,15 +4,12 @@
   <button mat-flat-button type="button" color="primary" (click)="copy()" [disabled]="!selectedLicense">{{ 'MAIN.COPY' | translate}}</button>
 </div>
 <p translate>MAIN.INTRO</p>
-<mat-form-field *ngIf="instCodes?.length > 1; else singleInst">
-  <mat-label>{{ 'MAIN.INST_CODE' | translate }}</mat-label>
-  <mat-select [(ngModel)]="instCode">
-    <mat-option *ngFor="let code of instCodes" [value]="code">{{code}}</mat-option>
-  </mat-select>
-</mat-form-field>
-<ng-template #singleInst>
-  <p>{{ 'MAIN.INST_CODE' | translate }}: <strong>{{ instCode }}</strong></p>
-</ng-template>
+
+<mat-radio-group [(ngModel)]="licenseType" class="radio-row">
+  <mat-radio-button value="LICENSE">License</mat-radio-button>
+  <mat-radio-button value="NEGOTIATION">Negotiation</mat-radio-button>
+</mat-radio-group>
+
 <mat-form-field>
   <mat-label>{{ 'MAIN.SEARCH' | translate }} {{ searchType | translate }}</mat-label>
   <input matInput #searchTermInput [(ngModel)]="data.searchTerm" (keydown.enter)="search()">
@@ -29,7 +26,8 @@
   <button mat-menu-item *ngFor="let option of searchOptions" (click)="setSearchType(option); searchTermInput.focus()">{{ option | translate }}</button>
 </mat-menu>
 <div *ngIf="data.licenses">
-  <mat-radio-group 
+  <mat-radio-group
+  class="radio-column" 
     [(ngModel)]="selectedLicense">
     <mat-radio-button *ngFor="let result of data.licenses.license" [value]="result">
       {{result.code}} / {{result.name}}

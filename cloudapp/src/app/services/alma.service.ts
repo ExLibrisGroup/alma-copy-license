@@ -33,7 +33,11 @@ export class AlmaService {
     ])
     .pipe(
       map(([configuration, existingLicense]) => {
-       
+  
+        if (license.type.value == "NEGOTIATION") {
+          license.type.value = "LICENSE";
+        }
+        
         if (existingLicense && !this.checkExistingLicenseCondition(configuration, existingLicense)) {
           const msg = this.translate.instant('LICENSE_EXISTS', { code: license.code })
           throw new Error(msg);
@@ -102,10 +106,10 @@ export class AlmaService {
               this.vendors_created++;
             }),
             catchError(e => {
-              const msg = this.translate.instant('COPY_LICENSE.VENDOR_FAILED', {code: vendor.code}) // WHICH ERROR TO THROW BECAUSE OF TRANSLATE
+              const msg = this.translate.instant('COPY_LICENSE.VENDOR_FAILED', {code: vendor.code}) +" - " + e.message
               console.log(e);
               this.alert.error(msg);
-              throw new Error(msg);
+              throw new Error(e);
             })
           );
       })
@@ -116,7 +120,7 @@ export class AlmaService {
     return this.getAmendment(license_code, amendment.code)
     .pipe(
       catchError(e =>{
-        /* Vendor doesn't exist */
+        /* Amendment doesn't exist */
         const requestBody = amendment;
           let request = {
             url: `/almaws/v1/acq/licenses/${license_code}/amendments`,
@@ -129,7 +133,7 @@ export class AlmaService {
               this.amendments_created++;
             }),
             catchError(e => {
-              const msg = this.translate.instant('COPY_LICENSE.AMENDMENT_FAILED', {code: amendment.code}) // WHICH ERROR TO THROW BECAUSE OF TRANSLATE
+              const msg = this.translate.instant('COPY_LICENSE.AMENDMENT_FAILED', {code: amendment.code}) +" - " + e.message
               console.log(e);
               this.alert.error(msg);
               throw new Error(msg);

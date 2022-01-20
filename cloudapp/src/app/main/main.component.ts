@@ -23,25 +23,14 @@ export class MainComponent implements OnInit, OnDestroy {
   @ViewChild('searchTermInput') searchTermInput: ElementRef;
   @ViewChild(CopyLicenseComponent) copyLicense: CopyLicenseComponent;
   loading = false;
-  instCodes: string[] = [];
   searchType: string;
   searchOptions = [ _('SEARCH_OPTIONS.NAME'), _('SEARCH_OPTIONS.CODE'), _('SEARCH_OPTIONS.LICENSOR')];
   selectedLicense: License;
-
-  private _instCode: string;
-  get instCode() {
-    return this._instCode;
-  }
-  set instCode(val: string) {
-    this._instCode = val;
-    this.store.set(STORE_INST_CODE, val).subscribe();
-    this.rest.instCode = val;
-  }
+  licenseType: string = "LICENSE";
 
   constructor(
     private store: CloudAppStoreService,
     private alert: AlertService,
-    private rest: RestProxyService,
     private data: DataService,
     private remote: RemoteAlmaService,
     private router: Router,
@@ -77,10 +66,13 @@ export class MainComponent implements OnInit, OnDestroy {
   getLicenses(page: PageOptions = undefined) {
     this.loading = true;
     const searchType = mapi18n(this.searchType).toLowerCase()
-    return this.remote.getLicenses(this.data.searchTerm, searchType, page)
+    return this.remote.getLicenses(this.data.searchTerm, searchType, page, this.licenseType)
     .pipe(finalize(() => this.loading = false))
     .subscribe({
-      next: licenses => this.data.licenses = licenses,
+      next: licenses => {
+        this.data.licenses = licenses;
+
+      },
       error: e => this.alert.error(e.message),
     });;
   }

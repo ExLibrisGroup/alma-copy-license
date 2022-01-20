@@ -25,7 +25,7 @@ export class RestProxyService {
     let req: Request = typeof request == 'string' ? { url: request, method: HttpMethod.GET } : request;
     req = merge({ method: HttpMethod.GET, headers: {}, params: {} }, req);
     let params = new HttpParams({ fromObject: req.queryParams });
-
+    
     return forkJoin([
       this.configurationService.get(),
       this.getToken(),
@@ -51,7 +51,7 @@ export class RestProxyService {
               }, 
               mapKeys(req.headers, (v, k) => k.toLowerCase())
             )
-          );
+          ); 
         const options = { headers, params };
         switch (req.method) {
           case HttpMethod.GET:

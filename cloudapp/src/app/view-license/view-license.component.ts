@@ -41,10 +41,7 @@ export class ViewLicenseComponent implements OnInit {
     .subscribe({
       next: results => {
         const [license, attachments, amendments ] = results;
-        console.log(license);
-        console.log(attachments);
-        console.log(amendments);
-        
+      
         this.license = license;
         this.attachments = attachments.attachment.filter(a => !!a.file_name);
         this.amendments = amendments.license.filter(a => !!a.name);
