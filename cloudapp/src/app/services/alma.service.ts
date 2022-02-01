@@ -1,14 +1,15 @@
 import { Injectable } from "@angular/core";
-import { AlertService, CloudAppRestService, HttpMethod, Request } from "@exlibris/exl-cloudapp-angular-lib";
+import { CloudAppRestService, HttpMethod, Request } from "@exlibris/exl-cloudapp-angular-lib";
 import { TranslateService } from "@ngx-translate/core";
 import { omitBy } from "lodash";
 import { forkJoin, Observable, of } from "rxjs";
 import { catchError, map, mergeMap } from "rxjs/operators";
-import { Amendment, License, licenseDeleted } from "../models/alma";
+import { Amendment, Attachment, License, licenseDeleted } from "../models/alma";
 import { Configuration } from "../models/configuration";
 import { isEmptyValue, parseAlmaError } from "../utilities";
 import { ConfigurationService } from "./configuration.service";
 import { Vendor } from "../models/alma";
+import { RemoteAlmaService } from "./remote-alma.service";
 
 @Injectable({
   providedIn: 'root'
@@ -17,23 +18,41 @@ export class AlmaService {
 
   vendors_created = 0;
   amendments_created = 0;
+  attachments_created = 0;
+  attachments: Attachment[] = [];
 
   constructor(
     private rest: CloudAppRestService,
     private translate: TranslateService,
     private configration: ConfigurationService,
-    private alert: AlertService,
+    private remote: RemoteAlmaService,
   ) {}
 
   createLicense(license: License, vendor: Vendor) {
     return forkJoin([
       this.configration.get(),
       this.licenseExists(license.code),
+      this.remote.getAttachments(license.code),
+      this.getAttachments(license.code),
       this.createVendor(vendor),
     ])
     .pipe(
-      map(([configuration, existingLicense]) => {
-  
+      map(([configuration, existingLicense, attachmentsRemote, attachmentsLocal]) => {
+        if (configuration.createAttachments) {
+          if (attachmentsLocal){
+            let remote_attachments = attachmentsRemote.attachment;
+            let local_attachments = attachmentsLocal.attachment.map((attachment: Attachment) => attachment.file_name)
+            for (let attachment of remote_attachments) {
+              if (!local_attachments.includes(attachment.file_name)) {
+                this.attachments.push(attachment);
+              }
+            }
+          } 
+          else {
+            this.attachments = attachmentsRemote.attachment;
+          } 
+        }
+    
         if (license.type.value == "NEGOTIATION") {
           license.type.value = "LICENSE";
         }
@@ -88,6 +107,13 @@ export class AlmaService {
   getAmendment(license_code: string, amendment_code: string) {
     return this.rest.call(`/almaws/v1/acq/licenses/${license_code}/amendments/${amendment_code}`);
   }
+
+  getAttachments(license_code: string){
+    return this.rest.call(`/almaws/v1/acq/licenses/${license_code}/attachments`).pipe(catchError(e => {
+      /* License doesn't exist */
+      return of(null);
+    }))
+  }
   
   createVendor(vendor: Vendor): Observable<Vendor>{
     return this.getVendor(vendor.code)
@@ -108,8 +134,7 @@ export class AlmaService {
             catchError(e => {
               const msg = this.translate.instant('COPY_LICENSE.VENDOR_FAILED', {code: vendor.code}) +" - " + e.message
               console.log(e);
-              this.alert.error(msg);
-              throw new Error(e);
+              throw new Error(msg);
             })
           );
       })
@@ -135,11 +160,30 @@ export class AlmaService {
             catchError(e => {
               const msg = this.translate.instant('COPY_LICENSE.AMENDMENT_FAILED', {code: amendment.code}) +" - " + e.message
               console.log(e);
-              this.alert.error(msg);
               throw new Error(msg);
             })
           );
       })
    )    
-  } 
+  }
+  
+  createAttachment(attachment: Attachment ,license_code: string){
+      const requestBody = attachment;
+      let request = {
+        url: `/almaws/v1/acq/licenses/${license_code}/attachments`,
+        method: HttpMethod.POST,
+        requestBody
+      }; 
+      return this.rest.call(request).pipe(
+        map((attachment) => {
+          console.log(`Attachment name '${ attachment.file_name }' successfully created.`);
+          this.attachments_created++;
+        }),
+        catchError(e => {
+          const msg = this.translate.instant('COPY_LICENSE.ATTACHMENT_FAILED', {code: attachment.file_name}) +" - " + e.message;
+          console.log(e);
+          throw new Error(msg);
+        })
+      )
+  }
 }

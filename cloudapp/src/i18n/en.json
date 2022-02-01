@@ -4,9 +4,11 @@
 		"DISCARD": "Discard changes?",
 		"DISCARD_OK": "Yes, discard changes",
 		"EXISTING_LICENSE": "Handling for existing license:",
+		"HANDLE_ATTACHMENTES": "Handling for attachments:",
 		"NO_API_KEY_DEFINED": "API Key is not configured",
 		"API_KEY": "API Key",
-		"TITLE": "Configuration"
+		"TITLE": "Configuration",
+		"CREATE_ATTACHMENTS": "Create attachments"
 	},
 	"COPY_LICENSE": {
 		"CONFIRM": "Copy license {{ code }} into local institution?",
@@ -15,7 +17,9 @@
 		"AMENDMENTS_ADDED": "Amendments created: {{ amendments }}",
 		"AMENDMENT_FAILED": "Failed to create amendments code '{{ code }}'.",
 		"VENDORS_ADDED": "Vendors created: {{ vendors }}",
-		"VENDOR_FAILED": "Failed to create vendor code '{{ code }}'."
+		"VENDOR_FAILED": "Failed to create vendor code '{{ code }}'.",
+		"ATTACHMENTS_ADDED": "Attachments created: {{ attachments }}",
+		"ATTACHMENT_FAILED": "Failed to create attachment name '{{ code }}'."
 	},
 	"EXISTING_LICENSE": {
 		"OVERWRITE_ALL": "Overwrite all",
