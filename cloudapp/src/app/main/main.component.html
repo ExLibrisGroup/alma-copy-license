@@ -5,10 +5,10 @@
 </div>
 <p translate>MAIN.INTRO</p>
 
-<mat-radio-group [(ngModel)]="licenseType" class="radio-row">
+<!-- <mat-radio-group [(ngModel)]="licenseType" class="radio-row">
   <mat-radio-button value="LICENSE">License</mat-radio-button>
   <mat-radio-button value="NEGOTIATION">Negotiation</mat-radio-button>
-</mat-radio-group>
+</mat-radio-group> -->
 
 <mat-form-field>
   <mat-label>{{ 'MAIN.SEARCH' | translate }} {{ searchType | translate }}</mat-label>
@@ -30,7 +30,7 @@
   class="radio-column" 
     [(ngModel)]="selectedLicense">
     <mat-radio-button *ngFor="let result of data.licenses.license" [value]="result">
-      {{result.code}} / {{result.name}}
+      {{result.name}} ({{result.code}})
     </mat-radio-button>
   </mat-radio-group>
   <mat-paginator 

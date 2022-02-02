@@ -11,26 +11,26 @@
 		"CREATE_ATTACHMENTS": "Create attachments"
 	},
 	"COPY_LICENSE": {
-		"CONFIRM": "Copy license {{ code }} into local institution?",
+		"CONFIRM": "Copy license {{ name_and_code }}?",
 		"CONFIRM_OK": "Yes, copy license",
-		"SUCCESS": "License code {{ code }} successfully created.",
-		"AMENDMENTS_ADDED": "Amendments created: {{ amendments }}",
-		"AMENDMENT_FAILED": "Failed to create amendments code '{{ code }}'.",
-		"VENDORS_ADDED": "Vendors created: {{ vendors }}",
-		"VENDOR_FAILED": "Failed to create vendor code '{{ code }}'.",
-		"ATTACHMENTS_ADDED": "Attachments created: {{ attachments }}",
-		"ATTACHMENT_FAILED": "Failed to create attachment name '{{ code }}'."
+		"SUCCESS": "License {{ name_and_code }} successfully copied.",
+		"AMENDMENTS_ADDED": "Amendments copied: {{ amendments }}",
+		"AMENDMENT_FAILED": "Failed to copy amendment '{{ name_and_code }}'.",
+		"VENDORS_ADDED": "Vendors copied: {{ vendors }}",
+		"VENDOR_FAILED": "Failed to copy vendor '{{ name_and_code }}'.",
+		"ATTACHMENTS_ADDED": "Attachments copied: {{ attachments }}",
+		"ATTACHMENT_FAILED": "Failed to copy attachment '{{ name }}'."
 	},
 	"EXISTING_LICENSE": {
 		"OVERWRITE_ALL": "Overwrite all",
 		"OVERWRITE_DELETED": "Overwrite only licenses in \"deleted\" status",
 		"OVERWRITE_NONE": "Do not overwrite"
 	},
-	"LICENSE_EXISTS": "License {{ code }} already exists",
+	"LICENSE_EXISTS": "License {{ name_and_code }} already exists",
 	"MAIN": {
 		"CLEAR": "Clear",
 		"COPY": "Copy license",
-		"INTRO": "Search for a license or negotiation in the remote institution. View the selected license or copy it to your institution.",
+		"INTRO": "Search for a license in the remote institution. View the selected license or copy it to your institution.",
 		"SEARCH": "Search",
 		"VIEW": "View"
 	},

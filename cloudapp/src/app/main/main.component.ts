@@ -82,7 +82,7 @@ export class MainComponent implements OnInit, OnDestroy {
     this.router.navigate(['view', params]);
   }
 
-  copy() {
-    this.copyLicense.copyLicense(this.selectedLicense.code, this.selectedLicense.licensor.value);
+  copy() {   
+    this.copyLicense.copyLicense(this.selectedLicense, this.selectedLicense.licensor.value);
   }
 }

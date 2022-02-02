@@ -78,7 +78,7 @@
     <mat-tab label="{{ 'VIEW.AMENDMENTS' | translate }}">
       <mat-list role="list" *ngIf="amendments.length > 0; else emptyList">
         <mat-list-item role="listitem" *ngFor="let amendment of amendments">
-          {{ amendment.code }} / {{ amendment.name }}
+          {{ amendment.name }} ({{ amendment.code }})
         </mat-list-item>
       </mat-list>
     </mat-tab>

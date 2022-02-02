@@ -58,7 +58,8 @@ export class AlmaService {
         }
         
         if (existingLicense && !this.checkExistingLicenseCondition(configuration, existingLicense)) {
-          const msg = this.translate.instant('LICENSE_EXISTS', { code: license.code })
+          let name_and_code = license.name + " (" + license.code + ")";
+          const msg = this.translate.instant('LICENSE_EXISTS', { name_and_code })
           throw new Error(msg);
         } 
         return !!existingLicense;
@@ -128,11 +129,13 @@ export class AlmaService {
           };
           return this.rest.call(request).pipe(
             map((vendor) => {
-              console.log(`Vendor code '${ vendor.code }' successfully created.`);
+              let name_and_code = vendor.name + " (" + vendor.code + ")";
+              console.log(`Vendor '${ name_and_code }' successfully copied.`);
               this.vendors_created++;
             }),
             catchError(e => {
-              const msg = this.translate.instant('COPY_LICENSE.VENDOR_FAILED', {code: vendor.code}) +" - " + e.message
+              let name_and_code = vendor.name + " (" + vendor.code + ")";
+              const msg = this.translate.instant('COPY_LICENSE.VENDOR_FAILED', {name_and_code}) +" - " + e.message
               console.log(e);
               throw new Error(msg);
             })
@@ -154,11 +157,13 @@ export class AlmaService {
           };
           return this.rest.call(request).pipe(
             map((amendment) => {
-              console.log(`Amendment code '${ amendment.code }' successfully created.`);
+              let name_and_code = amendment.name + " (" + amendment.code + ")";
+              console.log(`Amendment '${ name_and_code }' successfully copied.`);
               this.amendments_created++;
             }),
             catchError(e => {
-              const msg = this.translate.instant('COPY_LICENSE.AMENDMENT_FAILED', {code: amendment.code}) +" - " + e.message
+              let name_and_code = amendment.name + " (" + amendment.code + ")";
+              const msg = this.translate.instant('COPY_LICENSE.AMENDMENT_FAILED', {name_and_code}) +" - " + e.message
               console.log(e);
               throw new Error(msg);
             })
@@ -176,11 +181,11 @@ export class AlmaService {
       }; 
       return this.rest.call(request).pipe(
         map((attachment) => {
-          console.log(`Attachment name '${ attachment.file_name }' successfully created.`);
+          console.log(`Attachment '${ attachment.file_name }' successfully copied.`);
           this.attachments_created++;
         }),
         catchError(e => {
-          const msg = this.translate.instant('COPY_LICENSE.ATTACHMENT_FAILED', {code: attachment.file_name}) +" - " + e.message;
+          const msg = this.translate.instant('COPY_LICENSE.ATTACHMENT_FAILED', {name: attachment.file_name}) +" - " + e.message;
           console.log(e);
           throw new Error(msg);
         })

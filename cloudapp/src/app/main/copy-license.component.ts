@@ -29,9 +29,10 @@ export class CopyLicenseComponent implements OnInit {
   ngOnInit() {
   }
 
-  copyLicense(code: string, vendor_code: string) {
+  copyLicense(license: License, vendor_code: string) {
+    let name_and_code = license.name + " (" + license.code + ")";
     this.dialog.confirm({
-      text: [ _('COPY_LICENSE.CONFIRM'), { code }],
+      text: [ _('COPY_LICENSE.CONFIRM'), { name_and_code }],
       ok: _('COPY_LICENSE.CONFIRM_OK'),
     })
     .subscribe(result => {
@@ -40,9 +41,10 @@ export class CopyLicenseComponent implements OnInit {
       this.alma.vendors_created = 0;
       this.alma.amendments_created = 0;
       this.alma.attachments_created = 0;
+      this.alma.attachments = [];
       this.loadingChange.emit(true);
       this.remote.getVendor(vendor_code).subscribe(vendor => {
-        this.remote.getLicense(code)
+        this.remote.getLicense(license.code)
         .pipe(
           mergeMap(license => this.alma.createLicense(license, vendor)),
         )
@@ -73,7 +75,8 @@ export class CopyLicenseComponent implements OnInit {
           const vendors_msg = this.translate.instant('COPY_LICENSE.VENDORS_ADDED', {vendors: this.alma.vendors_created})
           const amendments_msg = this.translate.instant('COPY_LICENSE.AMENDMENTS_ADDED', { amendments: this.alma.amendments_created })
           const attachments_msg = this.translate.instant('COPY_LICENSE.ATTACHMENTS_ADDED', { attachments: this.alma.attachments_created })
-          const msg = this.translate.instant('COPY_LICENSE.SUCCESS', { code: license.code }) + " - " + vendors_msg + " - " + amendments_msg + " - " + attachments_msg;
+          let name_and_code = license.name + " (" + license.code + ")";
+          const msg = this.translate.instant('COPY_LICENSE.SUCCESS', { name_and_code }) + " * * * " + vendors_msg + " * * * " + amendments_msg + " * * * " + attachments_msg;
           this.alert.success(msg, { autoClose: false });
           this.loadingChange.emit(false);
         })
