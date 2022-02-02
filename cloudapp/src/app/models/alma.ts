@@ -10,7 +10,14 @@ export interface License {
   licensor: Value;
   status: Value;
   term: Term[];
+  start_date: string;
+  signed_date: string;
+  signed_by: string;
   type: {value: string, desc: string};
+  location: {desc: string};
+  review_status: {desc: string};
+  uri: string;
+  licensing_agent: {desc: string};
 }
 
 export const licenseDeleted = (license: License) => 

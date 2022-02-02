@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { AlertService, CloudAppStoreService } from '@exlibris/exl-cloudapp-angular-lib';
 import { DataService } from '../services/data.service';
-import { RestProxyService } from '../services/rest-proxy.service';
 import { RemoteAlmaService } from '../services/remote-alma.service';
 import { marker as _ } from '@biesbjerg/ngx-translate-extract-marker';
 import { finalize } from 'rxjs/operators';
@@ -31,7 +30,7 @@ export class MainComponent implements OnInit, OnDestroy {
   constructor(
     private store: CloudAppStoreService,
     private alert: AlertService,
-    private data: DataService,
+    public data: DataService,
     private remote: RemoteAlmaService,
     private router: Router,
   ) { }
