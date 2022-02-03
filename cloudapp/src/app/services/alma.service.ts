@@ -43,13 +43,13 @@ export class AlmaService {
             let remote_attachments = attachmentsRemote.attachment;
             let local_attachments = attachmentsLocal.attachment.map((attachment: Attachment) => attachment.file_name)
             for (let attachment of remote_attachments) {
-              if (!local_attachments.includes(attachment.file_name)) {
+              if (!local_attachments.includes(attachment.file_name) && attachment.file_name != '') {
                 this.attachments.push(attachment);
               }
             }
           } 
           else {
-            this.attachments = attachmentsRemote.attachment;
+            this.attachments = attachmentsRemote.attachment.filter(attachment => attachment.file_name != '');
           } 
         }
     
