@@ -13,7 +13,7 @@
 	"COPY_LICENSE": {
 		"CONFIRM": "Copy license {{ name_and_code }}?",
 		"CONFIRM_OK": "Yes, copy license",
-		"SUCCESS": "License {{ name_and_code }} successfully copied",
+		"SUCCESS": "License {{ name_and_code }} successfully copied.",
 		"AMENDMENTS_ADDED": "Amendments copied: {{ amendments }}",
 		"AMENDMENT_FAILED": "Failed to copy amendment '{{ name_and_code }}'.",
 		"VENDORS_ADDED": "Vendors copied: {{ vendors }}",

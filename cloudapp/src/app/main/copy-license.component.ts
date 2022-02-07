@@ -76,7 +76,7 @@ export class CopyLicenseComponent implements OnInit {
           const amendments_msg = this.translate.instant('COPY_LICENSE.AMENDMENTS_ADDED', { amendments: this.alma.amendments_created })
           const attachments_msg = this.translate.instant('COPY_LICENSE.ATTACHMENTS_ADDED', { attachments: this.alma.attachments_created })
           let name_and_code = license.name + " (" + license.code + ")";
-          const msg = this.translate.instant('COPY_LICENSE.SUCCESS', { name_and_code }) + ", " + vendors_msg + ", " + amendments_msg + ", " + attachments_msg;
+          const msg = this.translate.instant('COPY_LICENSE.SUCCESS', { name_and_code }) + '<br>' + vendors_msg + '<br>' + amendments_msg + '<br>' + attachments_msg;
           this.alert.success(msg, { autoClose: false });
           this.loadingChange.emit(false);
         })
