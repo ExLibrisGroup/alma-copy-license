@@ -3,8 +3,8 @@
 	"CONFIGURATION": {
 		"DISCARD": "Discard changes?",
 		"DISCARD_OK": "Yes, discard changes",
-		"EXISTING_LICENSE": "Handling for existing license:",
-		"HANDLE_ATTACHMENTES": "Handling for attachments:",
+		"EXISTING_LICENSE": "Existing license handling:",
+		"HANDLE_ATTACHMENTES": "Attachments handling:",
 		"NO_API_KEY_DEFINED": "API Key is not configured",
 		"API_KEY": "API Key",
 		"TITLE": "Configuration",
@@ -30,7 +30,7 @@
 	"MAIN": {
 		"CLEAR": "Clear",
 		"COPY": "Copy license",
-		"INTRO": "Search for a license in the remote institution. View the selected license or copy it to your institution.",
+		"INTRO": "Search for a license in the network zone. View the selected license or copy it to your institution.",
 		"SEARCH": "Search",
 		"VIEW": "View"
 	},
