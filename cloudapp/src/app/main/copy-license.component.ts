@@ -53,7 +53,13 @@ export class CopyLicenseComponent implements OnInit {
             this.createVendors(license);    
           },
           error: e => {
-            this.alert.error(e.message);
+            if (e.message.startsWith('License terms valid values')){
+              console.log(e);
+              this.alert.error('The license terms do not exist in the institution.');
+            }
+            else {
+              this.alert.error(e.message);
+            }
             this.loadingChange.emit(false);
           },
         })
