@@ -36,6 +36,9 @@ export class RemoteAlmaService {
   getAmendments(code: string) {
     return this.rest.call<Amendments>(`/almaws/v1/acq/licenses/${code}/amendments`);
   }
+  getAmendment(code: string) {
+    return this.rest.call<License>(`/almaws/v1/acq/licenses/${code}`);
+  }
 
   getVendor(code: string) {
     return this.rest.call<Vendor>(`/almaws/v1/acq/vendors/${code}`);

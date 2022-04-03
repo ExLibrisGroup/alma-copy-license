@@ -75,7 +75,9 @@ export class CopyLicenseComponent implements OnInit {
     this.remote.getAmendments(license.code).subscribe(amendments => {
       from(amendments.license).pipe(
         mergeMap(amendment => {
-          return this.alma.createAmendment(license.code, amendment);
+          return this.remote.getAmendment(amendment.code).pipe(
+            concatMap(full_amendment => this.alma.createAmendment(license.code, full_amendment))
+          )
         }),
         finalize(() => {
           const vendors_msg = this.translate.instant('COPY_LICENSE.VENDORS_ADDED', {vendors: this.alma.vendors_created})
