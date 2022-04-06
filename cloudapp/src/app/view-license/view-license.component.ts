@@ -61,7 +61,7 @@ export class ViewLicenseComponent implements OnInit {
   }
 
   copy() {
-    this.copyLicense.copyLicense(this.license, this.license.licensor.value);
+    this.copyLicense.dialogCopyLicense(this.license, this.license.licensor.value);
   }
 
   get terms() {

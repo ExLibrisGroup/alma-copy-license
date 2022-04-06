@@ -11,7 +11,7 @@
 		"CREATE_ATTACHMENTS": "Create attachments"
 	},
 	"COPY_LICENSE": {
-		"CONFIRM": "Copy license {{ name_and_code }}?",
+		"CONFIRM": "\nDo you wish to overwrite?",
 		"CONFIRM_OK": "Yes, copy license",
 		"SUCCESS": "License {{ name_and_code }} successfully copied.",
 		"AMENDMENTS_ADDED": "Amendments copied: {{ amendments }}",
@@ -26,7 +26,7 @@
 		"OVERWRITE_DELETED": "Overwrite only licenses in \"deleted\" status",
 		"OVERWRITE_NONE": "Do not overwrite"
 	},
-	"LICENSE_EXISTS": "License {{ name_and_code }} already exists",
+	"LICENSE_EXISTS": "License {{ name_and_code }} already exists.",
 	"MAIN": {
 		"CLEAR": "Clear",
 		"COPY": "Copy license",

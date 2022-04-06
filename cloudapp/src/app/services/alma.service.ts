@@ -3,6 +3,7 @@ import { CloudAppRestService, HttpMethod, Request } from "@exlibris/exl-cloudapp
 import { TranslateService } from "@ngx-translate/core";
 import { omitBy } from "lodash";
 import { forkJoin, Observable, of } from "rxjs";
+import { marker as _ } from '@biesbjerg/ngx-translate-extract-marker';
 import { catchError, map, mergeMap } from "rxjs/operators";
 import { Amendment, Attachment, License, licenseDeleted } from "../models/alma";
 import { Configuration } from "../models/configuration";
@@ -10,6 +11,7 @@ import { isEmptyValue, parseAlmaError } from "../utilities";
 import { ConfigurationService } from "./configuration.service";
 import { Vendor } from "../models/alma";
 import { RemoteAlmaService } from "./remote-alma.service";
+import { DialogService } from "eca-components";
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +28,7 @@ export class AlmaService {
     private translate: TranslateService,
     private configration: ConfigurationService,
     private remote: RemoteAlmaService,
+    private dialog: DialogService,
   ) {}
 
   createLicense(license: License, vendor: Vendor) {
@@ -59,9 +62,10 @@ export class AlmaService {
         
         if (existingLicense && !this.checkExistingLicenseCondition(configuration, existingLicense)) {
           let name_and_code = license.name + " (" + license.code + ")";
-          const msg = this.translate.instant('LICENSE_EXISTS', { name_and_code })
+          const msg = this.translate.instant('LICENSE_EXISTS', { name_and_code });
           throw new Error(msg);
-        } 
+        }
+        
         return !!existingLicense;
       }),
       map(override => ({

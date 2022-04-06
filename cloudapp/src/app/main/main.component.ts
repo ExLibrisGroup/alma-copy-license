@@ -82,6 +82,6 @@ export class MainComponent implements OnInit, OnDestroy {
   }
 
   copy() {   
-    this.copyLicense.copyLicense(this.selectedLicense, this.selectedLicense.licensor.value);
+    this.copyLicense.dialogCopyLicense(this.selectedLicense, this.selectedLicense.licensor.value);
   }
 }

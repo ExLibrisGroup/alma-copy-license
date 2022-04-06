@@ -8,6 +8,8 @@ import { AlmaService } from "../services/alma.service";
 import { TranslateService } from "@ngx-translate/core";
 import { License } from "../models/alma";
 import { from } from "rxjs";
+import { ConfigurationService } from "../services/configuration.service";
+import { parseAlmaError } from "../utilities";
 
 @Component({
   selector: 'app-copy-license',
@@ -21,6 +23,7 @@ export class CopyLicenseComponent implements OnInit {
   constructor(
     private alert: AlertService,
     private dialog: DialogService,
+    private configration: ConfigurationService,
     private remote: RemoteAlmaService,
     private alma: AlmaService,
     private translate: TranslateService,
@@ -29,14 +32,44 @@ export class CopyLicenseComponent implements OnInit {
   ngOnInit() {
   }
 
+  dialogCopyLicense(license: License, vendor_code: string){
+    this.loadingChange.emit(true);
+    this.configration.get().subscribe(configuration => {
+      if (configuration.existingLicense == 'OVERWRITE_NONE') {
+        this.copyLicense(license, vendor_code);
+      }
+      else {
+        this.alma.getLicense(license.code).subscribe(() => {
+          let name_and_code = license.name + " (" + license.code + ")";
+          const msg = this.translate.instant('LICENSE_EXISTS', { name_and_code }) + this.translate.instant("COPY_LICENSE.CONFIRM");
+          this.dialog.confirm({
+            text: [ msg ],
+            ok: _('COPY_LICENSE.CONFIRM_OK'),
+          }).subscribe(result => {
+            if (!result) {this.loadingChange.emit(false); return};
+            this.copyLicense(license, vendor_code);   
+          })
+          
+        }, error => {
+          // License doesn't exist
+          if (parseAlmaError(error).errorCode == '403400') {
+            this.copyLicense(license, vendor_code);
+          }
+          else {
+            this.alert.error(error.message);
+            this.loadingChange.emit(false);
+          }
+        })
+      }
+    },
+    error => {
+      this.alert.error(error.message);
+      this.loadingChange.emit(false);
+    }) 
+  }
+
+
   copyLicense(license: License, vendor_code: string) {
-    let name_and_code = license.name + " (" + license.code + ")";
-    this.dialog.confirm({
-      text: [ _('COPY_LICENSE.CONFIRM'), { name_and_code }],
-      ok: _('COPY_LICENSE.CONFIRM_OK'),
-    })
-    .subscribe(result => {
-      if (!result) return;
       this.alert.clear();
       this.alma.vendors_created = 0;
       this.alma.amendments_created = 0;
@@ -68,7 +101,6 @@ export class CopyLicenseComponent implements OnInit {
         this.alert.error(error.message);
         this.loadingChange.emit(false);
       })  
-    })
   }
 
   createAmendments(license: License){
