@@ -27,6 +27,7 @@
 		"OVERWRITE_NONE": "Do not overwrite"
 	},
 	"LICENSE_EXISTS": "License {{ name_and_code }} already exists.",
+	"LICENSE_EXISTS_NOT_DELETED": "License {{ name_and_code }} is not in \"deleted\" status.",
 	"MAIN": {
 		"CLEAR": "Clear",
 		"COPY": "Copy license",

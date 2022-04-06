@@ -62,7 +62,12 @@ export class AlmaService {
         
         if (existingLicense && !this.checkExistingLicenseCondition(configuration, existingLicense)) {
           let name_and_code = license.name + " (" + license.code + ")";
-          const msg = this.translate.instant('LICENSE_EXISTS', { name_and_code });
+          if (configuration.existingLicense == 'OVERWRITE_NONE') {
+            var msg = this.translate.instant('LICENSE_EXISTS', { name_and_code });
+          }
+          else if (configuration.existingLicense == 'OVERWRITE_DELETED') {
+            var msg = this.translate.instant('LICENSE_EXISTS_NOT_DELETED', { name_and_code });
+          }
           throw new Error(msg);
         }
         
