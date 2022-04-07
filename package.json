@@ -24,6 +24,7 @@
     "@ngx-translate/core": "~13.0.0",
     "eca-components": "^1.4.0",
     "lodash": "~4.17.21",
+    "minimist": "~1.2.6",
     "rxjs": "~6.5.5",
     "zone.js": "~0.10.3"
   },
