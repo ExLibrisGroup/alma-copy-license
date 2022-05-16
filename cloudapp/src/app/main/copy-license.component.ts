@@ -6,7 +6,7 @@ import { RemoteAlmaService } from "../services/remote-alma.service";
 import { concatMap, finalize, mergeMap } from "rxjs/operators";
 import { AlmaService } from "../services/alma.service";
 import { TranslateService } from "@ngx-translate/core";
-import { License } from "../models/alma";
+import { License, LicenseTerm } from "../models/alma";
 import { from } from "rxjs";
 import { ConfigurationService } from "../services/configuration.service";
 import { parseAlmaError } from "../utilities";
@@ -19,6 +19,7 @@ export class CopyLicenseComponent implements OnInit {
 
   @Input() loading: boolean;
   @Output() loadingChange = new EventEmitter<boolean>();
+  terms_to_copy: LicenseTerm[] = [];
   
   constructor(
     private alert: AlertService,
@@ -77,24 +78,36 @@ export class CopyLicenseComponent implements OnInit {
       this.alma.attachments = [];
       this.loadingChange.emit(true);
       this.remote.getVendor(vendor_code).subscribe(vendor => {
-        this.remote.getLicense(license.code)
-        .pipe(
-          mergeMap(license => this.alma.createLicense(license, vendor)),
-        )
-        .subscribe({
-          next: license => {
-            this.createVendors(license);    
-          },
-          error: e => {
-            if (e.message.startsWith('License terms valid values')){
-              console.log(e);
-              this.alert.error('The license terms do not exist in the institution.');
-            }
-            else {
-              this.alert.error(e.message);
-            }
-            this.loadingChange.emit(false);
-          },
+        this.remote.getLicenseTerms().subscribe(remote_terms => {
+          this.alma.getLicenseTerms().subscribe(local_terms => {
+            remote_terms.license_term = remote_terms.license_term.filter(t => t.otb == false);
+            local_terms.license_term = local_terms.license_term.filter(t => t.otb == false);
+            
+            remote_terms.license_term.forEach(term => {
+              if (!local_terms.license_term.find(t => t.code == term.code)) {
+                this.terms_to_copy.push(term);
+              }
+            })
+            this.remote.getLicense(license.code)
+            .pipe(
+               mergeMap(license => this.alma.createLicense(license, vendor, this.terms_to_copy)),
+              )
+              .subscribe({
+                next: license => {
+                this.createVendors(license);    
+                },
+              error: e => {
+                if (e.message.startsWith('License terms valid values')){
+                  console.log(e);
+                  this.alert.error('The license terms do not exist in the institution.');
+                }
+                else {
+                  this.alert.error(e.message);
+                }
+                this.loadingChange.emit(false);
+              },
+            })   
+          })
         })
       },
       error => {
@@ -102,7 +115,7 @@ export class CopyLicenseComponent implements OnInit {
         this.loadingChange.emit(false);
       })  
   }
-
+  
   createAmendments(license: License){
     this.remote.getAmendments(license.code).subscribe(amendments => {
       from(amendments.license).pipe(
@@ -115,8 +128,9 @@ export class CopyLicenseComponent implements OnInit {
           const vendors_msg = this.translate.instant('COPY_LICENSE.VENDORS_ADDED', {vendors: this.alma.vendors_created})
           const amendments_msg = this.translate.instant('COPY_LICENSE.AMENDMENTS_ADDED', { amendments: this.alma.amendments_created })
           const attachments_msg = this.translate.instant('COPY_LICENSE.ATTACHMENTS_ADDED', { attachments: this.alma.attachments_created })
+          const license_terms_msg = this.translate.instant('COPY_LICENSE.LICENSE_TERMS_ADDED', { license_terms: this.alma.license_terms_created })
           let name_and_code = license.name + " (" + license.code + ")";
-          const msg = this.translate.instant('COPY_LICENSE.SUCCESS', { name_and_code }) + '<br>' + vendors_msg + '<br>' + amendments_msg + '<br>' + attachments_msg;
+          const msg = this.translate.instant('COPY_LICENSE.SUCCESS', { name_and_code }) + '<br>' + vendors_msg + '<br>' + amendments_msg + '<br>' + attachments_msg + '<br>' + license_terms_msg;
           this.alert.success(msg, { autoClose: false });
           this.loadingChange.emit(false);
         })

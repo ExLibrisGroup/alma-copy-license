@@ -19,7 +19,9 @@
 		"VENDORS_ADDED": "Vendors copied: {{ vendors }}",
 		"VENDOR_FAILED": "Failed to copy vendor '{{ name_and_code }}'.",
 		"ATTACHMENTS_ADDED": "Attachments copied: {{ attachments }}",
-		"ATTACHMENT_FAILED": "Failed to copy attachment '{{ name }}'."
+		"ATTACHMENT_FAILED": "Failed to copy attachment '{{ name }}'.",
+		"LICENSE_TERMS_ADDED": "License terms copied: {{ license_terms }}",
+		"LICENSE_TERM_FAILED": "Failed to copy license term '{{ name_and_code }}'"
 	},
 	"EXISTING_LICENSE": {
 		"OVERWRITE_ALL": "Overwrite all",

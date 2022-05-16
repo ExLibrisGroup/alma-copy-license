@@ -67,3 +67,13 @@ export interface Vendor {
   code: string;
   name: string;
 }
+
+export interface LicenseTerms {
+license_term: LicenseTerm[];
+}
+
+export interface LicenseTerm {
+  name: string;
+  code: string;
+  otb: boolean;
+}

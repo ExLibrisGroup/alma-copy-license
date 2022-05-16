@@ -2,16 +2,15 @@ import { Injectable } from "@angular/core";
 import { CloudAppRestService, HttpMethod, Request } from "@exlibris/exl-cloudapp-angular-lib";
 import { TranslateService } from "@ngx-translate/core";
 import { omitBy } from "lodash";
-import { forkJoin, Observable, of } from "rxjs";
+import { forkJoin, from, Observable, of } from "rxjs";
 import { marker as _ } from '@biesbjerg/ngx-translate-extract-marker';
 import { catchError, map, mergeMap } from "rxjs/operators";
-import { Amendment, Attachment, License, licenseDeleted } from "../models/alma";
+import { Amendment, Attachment, License, licenseDeleted, LicenseTerm, LicenseTerms } from "../models/alma";
 import { Configuration } from "../models/configuration";
 import { isEmptyValue, parseAlmaError } from "../utilities";
 import { ConfigurationService } from "./configuration.service";
 import { Vendor } from "../models/alma";
 import { RemoteAlmaService } from "./remote-alma.service";
-import { DialogService } from "eca-components";
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +20,7 @@ export class AlmaService {
   vendors_created = 0;
   amendments_created = 0;
   attachments_created = 0;
+  license_terms_created = 0;
   attachments: Attachment[] = [];
 
   constructor(
@@ -28,16 +28,16 @@ export class AlmaService {
     private translate: TranslateService,
     private configration: ConfigurationService,
     private remote: RemoteAlmaService,
-    private dialog: DialogService,
   ) {}
 
-  createLicense(license: License, vendor: Vendor) {
+  createLicense(license: License, vendor: Vendor, terms_to_copy: LicenseTerm[]) {
     return forkJoin([
       this.configration.get(),
       this.licenseExists(license.code),
       this.remote.getAttachments(license.code),
       this.getAttachments(license.code),
       this.createVendor(vendor),
+      this.createLicenseTerms(license, terms_to_copy),
     ])
     .pipe(
       map(([configuration, existingLicense, attachmentsRemote, attachmentsLocal]) => {
@@ -70,7 +70,6 @@ export class AlmaService {
           }
           throw new Error(msg);
         }
-        
         return !!existingLicense;
       }),
       map(override => ({
@@ -124,6 +123,9 @@ export class AlmaService {
       return of(null);
     }))
   }
+  getLicenseTerms(){
+    return this.rest.call<LicenseTerms>(`/almaws/v1/conf/license-terms`);
+  }
   
   createVendor(vendor: Vendor): Observable<Vendor>{
     return this.getVendor(vendor.code)
@@ -172,7 +174,7 @@ export class AlmaService {
             }),
             catchError(e => {
               let name_and_code = amendment.name + " (" + amendment.code + ")";
-              const msg = this.translate.instant('COPY_LICENSE.AMENDMENT_FAILED', {name_and_code}) +" - " + e.message
+              const msg = this.translate.instant('COPY_LICENSE.AMENDMENT_FAILED', {name_and_code}) +" - " + e.message;
               console.log(e);
               throw new Error(msg);
             })
@@ -199,5 +201,46 @@ export class AlmaService {
           throw new Error(msg);
         })
       )
+  }
+  createLicenseTerm(license_term: LicenseTerm){
+    const requestBody = license_term;
+    let request = {
+        url: `/almaws/v1/conf/license-terms`,
+        method: HttpMethod.POST,
+        requestBody
+    };
+    return this.rest.call(request).pipe(
+      map((license_term) => {
+        let name_and_code = license_term.name + " (" + license_term.code + ")";
+        console.log(`License term '${ name_and_code }' successfully copied.`);
+        this.license_terms_created++;
+      }),
+      catchError(e => {
+        let name_and_code = license_term.name + " (" + license_term.code + ")";
+        const msg = this.translate.instant('COPY_LICENSE.LICENSE_TERM_FAILED', {name_and_code}) +" - " + e.message;
+        console.log(e);
+        throw new Error(msg);
+      })
+    )
+  }
+  createLicenseTerms(license: License, license_terms: LicenseTerm[]){
+
+    let terms_to_copy: LicenseTerm[] = [];
+
+    license_terms.forEach(term => {
+      if (license.term.find(t => t.code.value == term.code)){
+          terms_to_copy.push(term);   
+      }
+    })
+
+    if (terms_to_copy.length == 0) {
+      return of(null)
+    }
+
+    return from(terms_to_copy).pipe(
+      mergeMap(term => {
+        return this.createLicenseTerm(term)
+      })
+    )
   }
 }
