@@ -33,7 +33,7 @@ export class CopyLicenseComponent implements OnInit {
   ngOnInit() {
   }
 
-  dialogCopyLicense(license: License, vendor_code: string){
+  dialogCopyLicense(license: License, vendor_code: string){ 
     this.loadingChange.emit(true);
     this.configration.get().subscribe(configuration => {
       if (configuration.existingLicense == 'OVERWRITE_NONE') {
@@ -107,8 +107,9 @@ export class CopyLicenseComponent implements OnInit {
                 this.loadingChange.emit(false);
               },
             })   
-          })
-        })
+          }, error => {this.loadingChange.emit(false); this.alert.error(error.message);}
+          )
+        }, error => {this.loadingChange.emit(false); this.alert.error(error.message);})
       },
       error => {
         this.alert.error(error.message);
@@ -121,10 +122,11 @@ export class CopyLicenseComponent implements OnInit {
       from(amendments.license).pipe(
         mergeMap(amendment => {
           return this.remote.getAmendment(amendment.code).pipe(
-            concatMap(full_amendment => this.alma.createAmendment(license.code, full_amendment))
+            concatMap(full_amendment => this.alma.createOrUpdateAmendment(license.code, full_amendment))
           )
         }),
         finalize(() => {
+          console.log("after all t?")
           const vendors_msg = this.translate.instant('COPY_LICENSE.VENDORS_ADDED', {vendors: this.alma.vendors_created})
           const amendments_msg = this.translate.instant('COPY_LICENSE.AMENDMENTS_ADDED', { amendments: this.alma.amendments_created })
           const attachments_msg = this.translate.instant('COPY_LICENSE.ATTACHMENTS_ADDED', { attachments: this.alma.attachments_created })
@@ -134,7 +136,7 @@ export class CopyLicenseComponent implements OnInit {
           this.alert.success(msg, { autoClose: false });
           this.loadingChange.emit(false);
         })
-      ).subscribe()
+      ).subscribe(t => console.log("from return:", t))
     });
   }
 

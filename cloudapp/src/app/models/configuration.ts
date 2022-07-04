@@ -11,6 +11,7 @@ export class Configuration {
   restProxyUrl: string = "";
   existingLicense: string = 'OVERWRITE_DELETED';
   createAttachments: boolean = false;
+  updateAmendments: boolean = false;
 }
 
 export const configurationFormGroup = (config: Configuration) => FormGroupUtil.toFormGroup(config);

@@ -4,7 +4,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { omitBy } from "lodash";
 import { forkJoin, from, Observable, of } from "rxjs";
 import { marker as _ } from '@biesbjerg/ngx-translate-extract-marker';
-import { catchError, map, mergeMap } from "rxjs/operators";
+import { catchError, map, mergeMap, tap } from "rxjs/operators";
 import { Amendment, Attachment, License, licenseDeleted, LicenseTerm, LicenseTerms } from "../models/alma";
 import { Configuration } from "../models/configuration";
 import { isEmptyValue, parseAlmaError } from "../utilities";
@@ -22,6 +22,7 @@ export class AlmaService {
   attachments_created = 0;
   license_terms_created = 0;
   attachments: Attachment[] = [];
+  update_amendments: boolean;
 
   constructor(
     private rest: CloudAppRestService,
@@ -41,6 +42,7 @@ export class AlmaService {
     ])
     .pipe(
       map(([configuration, existingLicense, attachmentsRemote, attachmentsLocal]) => {
+        this.update_amendments = configuration.updateAmendments;
         if (configuration.createAttachments) {
           if (attachmentsLocal){
             let remote_attachments = attachmentsRemote.attachment;
@@ -117,6 +119,7 @@ export class AlmaService {
     return this.rest.call(`/almaws/v1/acq/licenses/${license_code}/amendments/${amendment_code}`);
   }
 
+
   getAttachments(license_code: string){
     return this.rest.call(`/almaws/v1/acq/licenses/${license_code}/attachments`).pipe(catchError(e => {
       /* License doesn't exist */
@@ -155,9 +158,24 @@ export class AlmaService {
    )    
   }
   
-  createAmendment(license_code: string, amendment: Amendment): Observable<Amendment>{
+  createOrUpdateAmendment(license_code: string, amendment: Amendment): Observable<Amendment>{
     return this.getAmendment(license_code, amendment.code)
     .pipe(
+      mergeMap(() => {
+        // Update amendment
+        if (this.update_amendments) {
+          const requestBody = amendment;
+          let request = {
+            url: `/almaws/v1/acq/licenses/${license_code}/amendments/${amendment.code}`,
+            method: HttpMethod.PUT,
+            requestBody
+          }
+          return this.restCallAmendment(request, amendment).pipe(mergeMap(() => {return of(null)}));
+        }
+        else {
+          return of(null);
+        }
+      }),
       catchError(e =>{
         /* Amendment doesn't exist */
         const requestBody = amendment;
@@ -166,21 +184,26 @@ export class AlmaService {
             method: HttpMethod.POST,
             requestBody
           };
-          return this.rest.call(request).pipe(
-            map((amendment) => {
-              let name_and_code = amendment.name + " (" + amendment.code + ")";
-              console.log(`Amendment '${ name_and_code }' successfully copied.`);
-              this.amendments_created++;
-            }),
-            catchError(e => {
-              let name_and_code = amendment.name + " (" + amendment.code + ")";
-              const msg = this.translate.instant('COPY_LICENSE.AMENDMENT_FAILED', {name_and_code}) +" - " + e.message;
-              console.log(e);
-              throw new Error(msg);
-            })
-          );
+          return this.restCallAmendment(request, amendment);
       })
-   )    
+   )
+       
+  }
+
+  private restCallAmendment(request: any, amendment: Amendment){
+    return this.rest.call(request).pipe(
+      map((amendment) => {
+        let name_and_code = amendment.name + " (" + amendment.code + ")";
+        console.log(`Amendment '${ name_and_code }' successfully copied.`);
+        this.amendments_created++;
+      }),
+      catchError(e => {
+        let name_and_code = amendment.name + " (" + amendment.code + ")";
+        const msg = this.translate.instant('COPY_LICENSE.AMENDMENT_FAILED', {name_and_code}) +" - " + e.message;
+        console.log(e);
+        throw new Error(msg);
+      })
+    );
   }
   
   createAttachment(attachment: Attachment ,license_code: string){
