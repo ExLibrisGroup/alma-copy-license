@@ -77,7 +77,7 @@ export class AlmaService {
       map(override => ({
         url: override ? `/acq/licenses/${license.code}` : '/acq/licenses',
         method: override ? HttpMethod.PUT : HttpMethod.POST,
-        requestBody: omitBy(license, isEmptyValue) /* 500 when sending { value: null }, URM-162045 */
+        requestBody: license // omitBy(license, isEmptyValue) /* 500 when sending { value: null }, URM-162045 */
       } as Request)),
       mergeMap(request => this.rest.call<License>(request))
     )
