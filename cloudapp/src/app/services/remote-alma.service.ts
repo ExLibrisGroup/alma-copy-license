@@ -13,7 +13,7 @@ export class RemoteAlmaService {
 
   getLicenses(term: string, type: string = "name", page: PageOptions = { limit: 10, offset: 0 }, licenseType: string) {
     const queryParams = {
-      q: `${type}~${encodeURIComponent(term)}`,
+      q: `${type}~${term}`,
       limit: page.limit,
       offset: page.offset,
       type: licenseType,
