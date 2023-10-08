@@ -17,6 +17,7 @@ export class RemoteAlmaService {
       limit: page.limit,
       offset: page.offset,
       type: licenseType,
+      status: 'ACTIVE'
     } 
     return this.rest.call<Licenses>({ url: '/almaws/v1/acq/licenses', queryParams })
   }
